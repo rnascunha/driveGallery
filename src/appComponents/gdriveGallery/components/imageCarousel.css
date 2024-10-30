@@ -1,0 +1,12 @@
+.image-gallery-slide img {
+  width: 100%;
+  height: 500px;
+}
+
+.image-gallery-thumbnails-wrapper {
+  max-width: 100vw;
+}
+
+.fullscreen img {
+  height: 85vh;
+}

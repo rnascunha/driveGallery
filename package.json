@@ -1,0 +1,36 @@
+{
+  "name": "drive_gallery",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.13.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/roboto": "^5.1.0",
+    "@mui/icons-material": "^6.1.5",
+    "@mui/material": "^6.1.5",
+    "@mui/material-nextjs": "^6.1.5",
+    "next": "14.2.16",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-image-gallery": "^1.3.0",
+    "ts-dom-libs": "github:rnascunha/ts-dom-libs"
+  },
+  "devDependencies": {
+    "@types/gapi": "^0.0.47",
+    "@types/gapi.client.drive-v3": "^0.0.5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/react-image-gallery": "^1.2.4",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.16",
+    "typescript": "^5"
+  }
+}
