@@ -1,6 +1,6 @@
 import { DisplayConfig } from "./types";
 
-const base = "/g";
+const base = `${process.env.NEXT_PUBLIC_gallery_address}`;
 
 export function makePropsConfig(props: DisplayConfig) {
   const data = Object.assign({}, props) as Partial<DisplayConfig>;
@@ -65,4 +65,8 @@ export async function getConfigFile(id: string) {
   } catch (e) {
     return undefined;
   }
+}
+
+export function driveImageURL(id: string, width: number) {
+  return `https://drive.google.com/thumbnail?id=${id}&sz=w${width}`
 }

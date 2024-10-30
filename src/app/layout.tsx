@@ -1,14 +1,12 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
 import { Roboto } from "next/font/google";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
 import { Box, CssBaseline } from "@mui/material";
 
-// const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
@@ -36,11 +34,6 @@ export const metadata: Metadata = {
         width: 604,
         height: 603,
       },
-      //     {
-      //       url: "/image1200x630.jpeg",
-      //       width: 1200,
-      //       height: 630,
-      //     },
     ],
     type: "website",
   },

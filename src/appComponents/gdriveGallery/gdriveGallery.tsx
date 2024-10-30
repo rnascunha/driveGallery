@@ -110,10 +110,14 @@ export default function GDriveGallery({
             </Tooltip>
             <Tooltip title="Open view">
               <Link
-                href={makeLink(props)}
+                href={props.id ? makeLink(props): ""}
+                aria-disabled={props.id === ""}
+                tabIndex={props.id === "" ? -1 : undefined}
                 target="_blank"
                 style={{
                   display: "flex",
+                  pointerEvents: props.id === "" ? "none" : "auto",
+                  opacity: props.id === "" ? 0.3 : 1
                 }}
                 className={style.removeLinkStyle}
               >
