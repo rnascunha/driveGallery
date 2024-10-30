@@ -65,7 +65,7 @@ export default function GDriveGallery({
     if (!props.id || !state.api) return;
     getConfigFile(props.id)
       .then((p) => {
-        if (p) setProps(mergeProps(p, defaultDisplayProps));
+        if (p) setProps({...mergeProps(p, defaultDisplayProps), id: props.id});
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {

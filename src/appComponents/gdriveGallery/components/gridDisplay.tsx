@@ -9,7 +9,7 @@ import ScrollContainer from "@/components/scrollContainer";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { DisplayConfig } from "../types";
-import CenterContainer from "./centerContainer";
+import CenterContainer from "../../../components/centerContainer";
 import TitleHeader from "./titleHeader";
 import ImageCarousel from "./imageCarousel";
 import { FontType, getFont } from "./fonts";
@@ -55,6 +55,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
             sx={{
               width: "100%",
               height: props.grid.variant === "masonry" ? "100%" : "auto",
+              pb: "15px"
             }}
             variant={props.grid.variant}
             cols={cols}

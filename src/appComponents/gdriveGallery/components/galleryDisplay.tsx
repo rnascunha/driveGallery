@@ -1,5 +1,5 @@
 import { DisplayConfig } from "../types";
-import CenterContainer from "./centerContainer";
+import CenterContainer from "../../../components/centerContainer";
 
 import ScrollContainer from "@/components/scrollContainer";
 import TitleHeader from "./titleHeader";
