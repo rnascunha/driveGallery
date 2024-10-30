@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import Link from "next/link";
+// import Link from "next/link";
 import HouseIcon from "@mui/icons-material/House";
 
 export default function NotFound() {
