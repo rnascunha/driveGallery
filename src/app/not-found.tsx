@@ -13,14 +13,14 @@ export default function NotFound() {
     >
       <h2>Not Found</h2>
       <p>Could not find requested resource</p>
-      <Link
+      {/* <Link
         href="/g"
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
-      >
+      > */}
         <HouseIcon
           fontSize="large"
           sx={{
@@ -34,7 +34,7 @@ export default function NotFound() {
         >
           Return Home
         </Typography>
-      </Link>
+      {/* </Link> */}
     </Stack>
   );
 }
