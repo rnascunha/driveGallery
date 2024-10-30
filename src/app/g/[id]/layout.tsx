@@ -7,7 +7,7 @@ const baseDriveFiles = "https://www.googleapis.com/drive/v3/files";
 async function getTitleInfo(id: string) {
   const response = await fetch(
     `${baseDriveFiles}/${id}?key=${process.env.NEXT_PUBLIC_apiKey}&fields=name,description`
-  );
+  );  
   return await response.json();
 }
 
