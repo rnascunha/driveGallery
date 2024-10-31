@@ -66,7 +66,6 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
             {images.map((img, i) => (
               <ImageListItem key={img.id}>
                 <Image
-                  // src={img.thumbnailLink as string}
                   src={`https://drive.google.com/thumbnail?id=${img.id}&sz=w500`}
                   sizes="100"
                   alt={img.name as string}

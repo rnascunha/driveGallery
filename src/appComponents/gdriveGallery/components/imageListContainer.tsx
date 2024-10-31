@@ -1,6 +1,5 @@
 "use client";
 
-import CenterSpinner from "@/components/centerSpinner";
 import { DisplayConfig } from "../types";
 import { useEffect, useState } from "react";
 
@@ -8,6 +7,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import GridDisplay from "./gridDisplay";
 import GalleryDisplay from "./galleryDisplay";
 import { ImageListError, ImageListIdDefined } from "./ImageListStatus";
+import { SkeletonDriveGallery } from "./skeleton";
 
 export default function ImageListContainer({
   props,
@@ -41,7 +41,7 @@ export default function ImageListContainer({
 
   if (error !== null) return <ImageListError error={error} />;
   if (!props.id) return <ImageListIdDefined />;
-  if (images === undefined) return <CenterSpinner />;
+  if (images === undefined) return <SkeletonDriveGallery props={props} />;
 
   return props.type === "grid" ? (
     <GridDisplay images={images} props={props} />

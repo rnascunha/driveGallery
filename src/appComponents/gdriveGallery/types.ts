@@ -87,7 +87,7 @@ export const defaultGalleryProps: GalleryProps = {
 
 export const defaultDisplayProps: DisplayConfig = {
   id: "",
-  type: "gallery",
+  type: "grid",
   maxWidth: 1000,
   color: "#000000",
   backgroundColor: "#ffffff",

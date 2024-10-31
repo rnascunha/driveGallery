@@ -12,7 +12,7 @@ import {
   getConfigFile,
   mergeProps,
 } from "@/appComponents/gdriveGallery/functions";
-import CenterSpinner from "@/components/centerSpinner";
+import { SkeletonDriveGallery } from "@/appComponents/gdriveGallery/components/skeleton";
 
 const discoveryDocs = [
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
@@ -26,15 +26,15 @@ export default function GalleryPage({
   };
 }) {
   const [loading, setLoading] = useState(false);
-  const [props, setProps] = useState<Partial<DisplayConfig>>({});
+  const [props, setProps] = useState<DisplayConfig>(defaultDisplayProps);
 
   return (
     <>
       {!loading ? (
-        <CenterSpinner />
+        <SkeletonDriveGallery props={props} />
       ) : (
         <ImageListContainer
-          props={{ ...mergeProps(props, defaultDisplayProps), id: params.id }}
+          props={{ ...mergeProps(props, props), id: params.id }}
         />
       )}
       <Script

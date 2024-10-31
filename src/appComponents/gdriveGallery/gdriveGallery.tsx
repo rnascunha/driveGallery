@@ -1,6 +1,5 @@
 "use client";
 
-import CenterSpinner from "@/components/centerSpinner";
 import {
   CircularProgress,
   Divider,
@@ -22,6 +21,7 @@ import { getConfigFile, mergeProps } from "./functions";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CheckIcon from "@mui/icons-material/Check";
+import { SkeletonDriveGallery } from "./components/skeleton";
 
 const discoveryDocs = [
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
@@ -46,7 +46,9 @@ export default function GDriveGallery({
     api: false,
   });
   const [props, setProps] = useState<DisplayConfig>(
-    id ? { ...(initProps ?? defaultDisplayProps), id } : defaultDisplayProps
+    id
+      ? { ...(initProps ?? defaultDisplayProps), id }
+      : defaultDisplayProps
   );
   const [open, setOpen] = useState(true);
 
@@ -108,7 +110,11 @@ export default function GDriveGallery({
             </Tooltip>
           )}
         </Stack>
-        {state.api ? <ImageListContainer props={props} /> : <CenterSpinner />}
+        {state.api ? (
+          <ImageListContainer props={props} />
+        ) : (
+          <SkeletonDriveGallery props={props} />
+        )}
       </Stack>
       <Script
         src="https://apis.google.com/js/api.js"
@@ -133,7 +139,8 @@ export default function GDriveGallery({
                   .finally(() => {
                     setState({ api: true });
                   });
-              } else setState({ api: true });
+              }
+              else setState({ api: true });
             }
           );
         }}

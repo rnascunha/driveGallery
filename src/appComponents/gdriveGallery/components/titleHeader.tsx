@@ -33,6 +33,8 @@ export default function TitleHeader({ props }: TitleHeaderProps) {
   }, [props.id]);
 
   if (title === null && props.logo === "") return;
+  if (title === undefined) {
+  }
 
   return (
     <Stack alignItems="center">

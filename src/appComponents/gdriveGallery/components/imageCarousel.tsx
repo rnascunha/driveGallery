@@ -4,6 +4,7 @@ import ReactImageGallery from "react-image-gallery";
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import "./imageCarousel.css";
+import { driveImageURL } from "../functions";
 
 function description(
   image: gapi.client.drive.File,
@@ -35,8 +36,8 @@ export default function ImageCarousel({
   const items = useMemo(
     () =>
       images.map((i) => ({
-        original: `https://drive.google.com/thumbnail?id=${i.id}&sz=w1000`,
-        thumbnail: i.thumbnailLink as string,
+        original: driveImageURL(i.id as string, 1000),
+        thumbnail: driveImageURL(i.id as string, 100),
         description: description(i, showImageName, showImageDescription),
       })),
     [images, showImageDescription, showImageName]
