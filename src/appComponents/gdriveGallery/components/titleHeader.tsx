@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { DisplayConfig } from "../types";
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { FontType, getFont } from "./fonts";
+import Image from "next/image";
+import { driveImageURL } from "../functions";
 
 interface TitleData {
   title: string | undefined;
@@ -30,10 +32,28 @@ export default function TitleHeader({ props }: TitleHeaderProps) {
       });
   }, [props.id]);
 
-  if (title === null) return;
+  if (title === null && props.logo === "") return;
 
   return (
-    <Stack justifyContent="center">
+    <Stack alignItems="center">
+      {props.logo && (
+        <div
+          style={{
+            position: "relative",
+            height: "50px",
+            width: "100%",
+          }}
+        >
+          <Image
+            alt={props.logo}
+            src={driveImageURL(props.logo, 100)}
+            fill
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      )}
       {title ? (
         <>
           {title.title && props.showTitle && (

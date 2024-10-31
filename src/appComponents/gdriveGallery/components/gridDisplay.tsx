@@ -47,9 +47,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
         }}
       >
         <CenterContainer maxWidth={props.maxWidth}>
-          {(props.showTitle || props.showDescription) && (
-            <TitleHeader props={props} />
-          )}
+          <TitleHeader props={props} />
           <ImageList
             ref={ref}
             sx={{

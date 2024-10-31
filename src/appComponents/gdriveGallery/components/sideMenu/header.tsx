@@ -5,6 +5,7 @@ import SimpleSelect from "@/components/simpleSelect";
 import { debounce } from "ts-dom-libs/lib/debounce";
 import { fontFamily } from "../fonts";
 import { SwitchLabel } from "../../../../components/switch";
+import { urlToId } from "../../functions";
 
 interface HeaderMenuProps {
   props: DisplayConfig;
@@ -25,6 +26,17 @@ export default function HeaderMenu({ props, setProps }: HeaderMenuProps) {
 
   return (
     <>
+      <TextField
+        label="Logo"
+        size="small"
+        value={props.logo}
+        onChange={(ev) =>
+          setProps((prev) => ({
+            ...prev,
+            logo: urlToId(ev.target.value),
+          }))
+        }
+      />
       <Stack direction="row" gap={0.5}>
         <SimpleSelect
           label="Font Family"

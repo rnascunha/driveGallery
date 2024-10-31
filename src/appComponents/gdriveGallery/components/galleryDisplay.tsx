@@ -21,9 +21,7 @@ export default function GalleryDisplay({ images, props }: GalleryDisplayProps) {
       }}
     >
       <CenterContainer maxWidth={props.maxWidth}>
-        {(props.showTitle || props.showDescription) && (
-          <TitleHeader props={props} />
-        )}
+        <TitleHeader props={props} />
         <ImageCarousel
           props={props.gallery}
           images={images}

@@ -46,6 +46,7 @@ export interface DisplayConfig {
   id: string;
   type: DisplayType;
   backgroundColor: string;
+  logo: string;
   color: string;
   fontFamily: string;
   maxWidth: number;
@@ -89,6 +90,7 @@ export const defaultDisplayProps: DisplayConfig = {
   maxWidth: 1000,
   color: "#000000",
   backgroundColor: "#ffffff",
+  logo: "",
   fontFamily: "Roboto",
   showTitle: true,
   showDescription: true,

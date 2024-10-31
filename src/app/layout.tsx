@@ -51,7 +51,6 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <CssBaseline enableColorScheme />
           <Box
-            // className={styles.container}
             sx={{
               bgcolor: "background.default",
               color: "text.primary",

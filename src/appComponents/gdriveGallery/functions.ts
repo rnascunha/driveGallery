@@ -61,12 +61,34 @@ export async function getConfigFile(id: string) {
       alt: "media",
     });
     return file.result as Partial<DisplayConfig>;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined;
   }
 }
 
 export function driveImageURL(id: string, width: number) {
-  return `https://drive.google.com/thumbnail?id=${id}&sz=w${width}`
+  return `https://drive.google.com/thumbnail?id=${id}&sz=w${width}`;
+}
+
+export function urlToId(url: string) {
+  return url.startsWith("https://drive.google.com/file/d")
+    ? url.replace(/^https:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9-_]+)\??.*$/, "$1")
+    : url;
+}
+
+export function isLink(url: string) {
+  return /^https?:\/\//.test(url);
+}
+
+export function isDriveLink(url: string) {
+  return /^https:\/\/drive\.google\.com\//.test(url);
+}
+
+export function isDriveFolder(url: string) {
+  return /^https:\/\/drive\.google\.com\/drive\/folders\//.test(url);
+}
+
+export function isDriveFile(url: string) {
+  return /^https:\/\/drive\.google\.com\/file\/d\//.test(url);
 }
