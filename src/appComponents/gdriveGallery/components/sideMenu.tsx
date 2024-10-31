@@ -1,16 +1,24 @@
-import { Stack, TextField, Tooltip } from "@mui/material";
+import {
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { DisplayConfig } from "../types";
 import { Dispatch, SetStateAction } from "react";
 import GridMenu from "./sideMenu/grid";
 import GalleryMenu from "./sideMenu/gallery";
 import { ArrayPanel, PanelConfig } from "@/components/panels";
 
+import GeneralMenu from "./sideMenu/general";
+import HeaderMenu from "./sideMenu/header";
+
 import WebAssetIcon from "@mui/icons-material/WebAsset";
 import AppsIcon from "@mui/icons-material/Apps";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import TitleIcon from "@mui/icons-material/Title";
-import GeneralMenu from "./sideMenu/general";
-import HeaderMenu from "./sideMenu/header";
+import SyncIcon from "@mui/icons-material/Sync";
 
 interface SideMenuProps {
   props: DisplayConfig;
@@ -72,16 +80,46 @@ export default function SideMenu({ props, setProps }: SideMenuProps) {
             : ev.target.value;
           setProps((prev) => ({ ...prev, id }));
         }}
+        sx={{
+          "& .MuiInputBase-root": {
+            pr: 0.5,
+          },
+        }}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment
+                position="end"
+                sx={{
+                  ml: 0,
+                }}
+              >
+                <Tooltip title="Sync">
+                  <IconButton
+                    size="small"
+                    edge="end"
+                    onClick={() =>
+                      setProps((prev) => ({ ...prev, force: !prev.force }))
+                    }
+                  >
+                    <SyncIcon />
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            ),
+          },
+        }}
       />
       <ArrayPanel
         panels={panels}
         sxHeader={{
           "& .MuiButtonBase-root": {
             minWidth: "unset",
+            flex: 1,
           },
           "& .MuiTabs-flexContainer": {
             justifyContent: "space-between",
-          }
+          },
         }}
       />
     </Stack>

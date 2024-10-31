@@ -11,7 +11,6 @@ import {
   positionTitles,
 } from "../../types";
 import {
-  Divider,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -72,7 +71,6 @@ export default function GridMenu({ props, setProps }: GridMenuProps) {
 
   return (
     <>
-      <Divider>Grid</Divider>
       <Stack direction="row" alignItems="center" gap={1.5}>
         <FormControl
           size="small"
@@ -117,7 +115,7 @@ export default function GridMenu({ props, setProps }: GridMenuProps) {
           />
         </Tooltip>
       </Stack>
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" gap={0.5}>
         <TextField
           label="Columns"
           value={
@@ -185,7 +183,7 @@ export default function GridMenu({ props, setProps }: GridMenuProps) {
           }}
         />
       </Stack>
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" gap={0.5}>
         <FormControl
           size="small"
           sx={{

@@ -26,7 +26,7 @@ export default function ImageListContainer({
     gapi.client.drive.files
       .list({
         pageSize: 100,
-        fields: "files(id, name, description, thumbnailLink)",
+        fields: "files(id, name, description)",
         q: `('${props.id}' in parents) and trashed = false and (mimeType contains 'image/')`,
         spaces: "drive",
       })
@@ -37,7 +37,7 @@ export default function ImageListContainer({
         setImages(undefined);
         setError(e.result.error.message);
       });
-  }, [props.id]);
+  }, [props.id, props.force]);
 
   if (error !== null) return <ImageListError error={error} />;
   if (!props.id) return <ImageListIdDefined />;

@@ -15,24 +15,13 @@ import { gapiScriptLoad } from "ts-dom-libs/lib/google/functions";
 import ImageListContainer from "./components/imageListContainer";
 import { defaultDisplayProps, DisplayConfig } from "./types";
 
+import TopMenu from "./components/sideMenu/topMenu";
 import SideMenu from "./components/sideMenu";
 
-import {
-  getConfigFile,
-  makeLink,
-  makePropsConfig,
-  mergeProps,
-} from "./functions";
-import Link from "next/link";
-import style from "@/lib/styles.module.css";
+import { getConfigFile, mergeProps } from "./functions";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import CheckIcon from "@mui/icons-material/Check";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import LinkIcon from "@mui/icons-material/Link";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { download_string_as_file } from "ts-dom-libs/lib/download";
 
 const discoveryDocs = [
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
@@ -65,7 +54,8 @@ export default function GDriveGallery({
     if (!props.id || !state.api) return;
     getConfigFile(props.id)
       .then((p) => {
-        if (p) setProps({...mergeProps(p, defaultDisplayProps), id: props.id});
+        if (p)
+          setProps({ ...mergeProps(p, defaultDisplayProps), id: props.id });
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
@@ -84,50 +74,7 @@ export default function GDriveGallery({
             height: "100%",
           }}
         >
-          <Stack direction="row" justifyContent="end" alignItems="center">
-            <Tooltip title="Download configuration">
-              <IconButton
-                onClick={() =>
-                  download_string_as_file(
-                    JSON.stringify(makePropsConfig(props)),
-                    "config.json",
-                    "application/json"
-                  )
-                }
-              >
-                <FileDownloadIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Copy link">
-              <span>
-                <IconButton
-                  onClick={() => navigator.clipboard.writeText(makeLink(props))}
-                  disabled={props.id === ""}
-                >
-                  <LinkIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title="Open view">
-              <Link
-                href={props.id ? makeLink(props): ""}
-                aria-disabled={props.id === ""}
-                tabIndex={props.id === "" ? -1 : undefined}
-                target="_blank"
-                style={{
-                  display: "flex",
-                  pointerEvents: props.id === "" ? "none" : "auto",
-                  opacity: props.id === "" ? 0.3 : 1
-                }}
-                className={style.removeLinkStyle}
-              >
-                <OpenInNewIcon />
-              </Link>
-            </Tooltip>
-            <IconButton onClick={() => setOpen(false)}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Stack>
+          <TopMenu props={props} setOpen={setOpen} setProps={setProps} />
           <Divider />
           <SideMenu props={props} setProps={setProps} />
         </Stack>

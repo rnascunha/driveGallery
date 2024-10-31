@@ -56,6 +56,7 @@ export interface DisplayConfig {
   showImageDescription: boolean;
   grid: GridProps;
   gallery: GalleryProps;
+  force: boolean;
 }
 
 const defaultGridProps: GridProps = {
@@ -98,4 +99,5 @@ export const defaultDisplayProps: DisplayConfig = {
   showImageDescription: true,
   grid: defaultGridProps,
   gallery: defaultGalleryProps,
+  force: false
 };

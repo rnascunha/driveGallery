@@ -27,7 +27,10 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
   const [cols, setCols] = useState<number>(props.grid.cols);
 
   useEffect(() => {
-    if (props.grid.columnType === "fixed") return;
+    if (props.grid.columnType === "fixed") {
+      setCols(props.grid.cols);
+      return;
+    }
     const calcCols = () => {
       if (!ref.current) return;
       const { width } = ref.current.getBoundingClientRect();
@@ -36,7 +39,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
     calcCols();
     window.addEventListener("resize", calcCols);
     return () => window.removeEventListener("resize", calcCols);
-  }, [props.grid.columnType, props.grid.colWidth]);
+  }, [props.grid.columnType, props.grid.colWidth, props.grid.cols]);
 
   return (
     <>
@@ -53,7 +56,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
             sx={{
               width: "100%",
               height: props.grid.variant === "masonry" ? "100%" : "auto",
-              pb: "15px"
+              pb: "15px",
             }}
             variant={props.grid.variant}
             cols={cols}

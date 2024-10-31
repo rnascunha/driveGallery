@@ -5,6 +5,7 @@ const base = `${process.env.NEXT_PUBLIC_gallery_address}`;
 export function makePropsConfig(props: DisplayConfig) {
   const data = Object.assign({}, props) as Partial<DisplayConfig>;
   delete data.id;
+  delete data.force;
   return data;
 }
 
