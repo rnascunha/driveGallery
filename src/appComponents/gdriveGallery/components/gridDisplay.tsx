@@ -15,6 +15,7 @@ import ImageCarousel from "./imageCarousel";
 import { FontType, getFont } from "./fonts";
 
 import "./imgAnimation.css";
+import { removeFileNameExtension } from "../functions";
 
 interface GridDisplayProps {
   props: DisplayConfig;
@@ -91,7 +92,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
                       }}
                       title={
                         props.showImageName
-                          ? (img.name as string).replace(/\..*$/, "")
+                          ? removeFileNameExtension(img.name as string)
                           : (img.description as string)
                       }
                       subtitle={

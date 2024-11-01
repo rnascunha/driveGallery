@@ -27,10 +27,14 @@ const discoveryDocs = [
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
 ];
 
+// const scopes = ["https://www.googleapis.com/auth/drive.file"];
+
 const width = 300;
 
 interface ApiState {
   api: boolean;
+  gsi: boolean;
+  signed: boolean;
 }
 
 interface GDriveGalleryProps {
@@ -44,11 +48,11 @@ export default function GDriveGallery({
 }: GDriveGalleryProps) {
   const [state, setState] = useState<ApiState>({
     api: false,
+    gsi: false,
+    signed: false,
   });
   const [props, setProps] = useState<DisplayConfig>(
-    id
-      ? { ...(initProps ?? defaultDisplayProps), id }
-      : defaultDisplayProps
+    id ? { ...(initProps ?? defaultDisplayProps), id } : defaultDisplayProps
   );
   const [open, setOpen] = useState(true);
 
@@ -120,7 +124,7 @@ export default function GDriveGallery({
         src="https://apis.google.com/js/api.js"
         onLoad={() => {
           if (gapi.client?.drive) {
-            setState({ api: true });
+            setState((prev) => ({ ...prev, api: true }));
             return;
           }
           gapiScriptLoad(
@@ -137,10 +141,9 @@ export default function GDriveGallery({
                     console.warn("Error getting config");
                   })
                   .finally(() => {
-                    setState({ api: true });
+                    setState((prev) => ({ ...prev, api: true }));
                   });
-              }
-              else setState({ api: true });
+              } else setState((prev) => ({ ...prev, api: true }));
             }
           );
         }}
@@ -148,6 +151,22 @@ export default function GDriveGallery({
         //   if (gapi.client?.drive) setState({ api: true });
         // }}
       />
+      {/* <Script
+        src="https://accounts.google.com/gsi/client"
+        onLoad={() => {
+          gsiScriptLoad(
+            process.env.NEXT_PUBLIC_client_id as string,
+            scopes,
+            (resp) => {
+              gsiCallbackAllScopes(
+                resp,
+                scopes,
+                () => setState((prev) => ({ ...prev, signed: true })),
+                (error) => setError?.(error)
+              );
+            }
+        }}
+      /> */}
     </>
   );
 }

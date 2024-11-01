@@ -4,7 +4,7 @@ import ReactImageGallery from "react-image-gallery";
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import "./imageCarousel.css";
-import { driveImageURL } from "../functions";
+import { driveImageURL, removeFileNameExtension } from "../functions";
 
 function description(
   image: gapi.client.drive.File,
@@ -12,7 +12,7 @@ function description(
   showImageDescription: boolean
 ) {
   const ret = [];
-  if (image.name && showImageName) ret.push(image.name);
+  if (image.name && showImageName) ret.push(removeFileNameExtension(image.name));
   if (image.description && showImageDescription) ret.push(image.description);
   if (ret.length === 0) return undefined;
   return ret.join(" - ");

@@ -4,6 +4,8 @@ import { makeLink, makePropsConfig, mergeProps } from "../../functions";
 import Link from "next/link";
 import { DisplayConfig } from "../../types";
 import { Dispatch, SetStateAction } from "react";
+import { filePicker } from "ts-dom-libs/lib/files/openFile";
+import { readFileAsString } from "@/lib/file";
 
 import style from "@/lib/styles.module.css";
 
@@ -12,8 +14,8 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import LinkIcon from "@mui/icons-material/Link";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { filePicker } from "ts-dom-libs/lib/files/openFile";
-import { readFileAsString } from "@/lib/file";
+import AddToDriveIcon from "@mui/icons-material/AddToDrive";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 async function loadJSONFileConfig() {
   const fileList = await filePicker("application/json");
@@ -38,6 +40,17 @@ interface TopMenuProps {
 export default function TopMenu({ props, setProps, setOpen }: TopMenuProps) {
   return (
     <Stack direction="row" justifyContent="end" alignItems="center">
+      <Tooltip title="Login">
+        <IconButton>
+          <AddToDriveIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Logout">
+        <IconButton>
+          <LogoutIcon />
+        </IconButton>
+      </Tooltip>
+      <Divider orientation="vertical" />
       <Tooltip title="Load configuration">
         <IconButton
           onClick={async () => {
@@ -87,7 +100,7 @@ export default function TopMenu({ props, setProps, setOpen }: TopMenuProps) {
             pointerEvents: props.id === "" ? "none" : "auto",
             opacity: props.id === "" ? 0.3 : 1,
             color: "rgba(0, 0, 0, 0.54)",
-            padding: "8px"
+            padding: "8px",
           }}
           className={style.removeLinkStyle}
         >

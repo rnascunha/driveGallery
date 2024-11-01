@@ -74,7 +74,10 @@ export function driveImageURL(id: string, width: number) {
 
 export function urlToId(url: string) {
   return url.startsWith("https://drive.google.com/file/d")
-    ? url.replace(/^https:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9-_]+)\??.*$/, "$1")
+    ? url.replace(
+        /^https:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9-_]+)\??.*$/,
+        "$1"
+      )
     : url;
 }
 
@@ -92,4 +95,8 @@ export function isDriveFolder(url: string) {
 
 export function isDriveFile(url: string) {
   return /^https:\/\/drive\.google\.com\/file\/d\//.test(url);
+}
+
+export function removeFileNameExtension(file: string) {
+  return file.replace(/\..*$/, "");
 }
