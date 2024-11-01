@@ -36,6 +36,7 @@ export interface GalleryProps {
   showNav: boolean;
   showIndex: boolean;
   showFullscreenButton: boolean;
+  showToggleDescritopn: boolean;
   autoPlay: boolean;
   thumbnailsPosition: ThumbnailsPosition;
   slideDuration: number;
@@ -77,6 +78,7 @@ export const defaultGalleryProps: GalleryProps = {
   showBullets: true,
   infinite: true,
   showFullscreenButton: true,
+  showToggleDescritopn: false,
   showNav: true,
   showIndex: true,
   autoPlay: false,

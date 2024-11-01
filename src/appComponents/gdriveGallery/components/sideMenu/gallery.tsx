@@ -53,6 +53,11 @@ export default function GalleryMenu({ props, setProps }: GalleryMenuProps) {
         checked={props.gallery.showPlay}
         onChange={(ev, ck) => updateValue("showPlay", ck)}
       />
+      <SwitchLabel
+        label="Toggle description"
+        checked={props.gallery.showPlay}
+        onChange={(ev, ck) => updateValue("showToggleDescritopn", ck)}
+      />
       <Stack direction="row" gap={0.5}>
         <CompactCheckbox
           label="Auto Play"
