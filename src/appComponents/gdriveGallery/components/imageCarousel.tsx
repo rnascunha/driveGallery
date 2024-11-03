@@ -91,6 +91,7 @@ export default function ImageCarousel({
       />
       {props.showToggleDescritopn && (
         <IconButton
+          size="large"
           sx={{
             position: "absolute",
             top: 0,

@@ -1,41 +1,42 @@
 "use client";
 
 import {
+  Alert,
+  AlertColor,
   CircularProgress,
   Divider,
   Drawer,
   IconButton,
+  Snackbar,
   Stack,
   Tooltip,
 } from "@mui/material";
-import Script from "next/script";
-import { useEffect, useState } from "react";
-import { gapiScriptLoad } from "ts-dom-libs/lib/google/functions";
+
+import { useEffect, useRef, useState } from "react";
+
 import ImageListContainer from "./components/imageListContainer";
-import { defaultDisplayProps, DisplayConfig } from "./types";
+import { defaultDisplayProps, DisplayConfig, Status } from "./types";
 
 import TopMenu from "./components/sideMenu/topMenu";
 import SideMenu from "./components/sideMenu";
 
 import { getConfigFile, mergeProps } from "./functions";
 
+import { SkeletonDriveGallery } from "./components/skeleton";
+import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
+import { GoogleScriptsSpecifics } from "./components/google/googleSpecific";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import CheckIcon from "@mui/icons-material/Check";
-import { SkeletonDriveGallery } from "./components/skeleton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const discoveryDocs = [
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
 ];
 
-// const scopes = ["https://www.googleapis.com/auth/drive.file"];
+const scopes = ["https://www.googleapis.com/auth/drive.file"];
 
 const width = 300;
-
-interface ApiState {
-  api: boolean;
-  gsi: boolean;
-  signed: boolean;
-}
 
 interface GDriveGalleryProps {
   id?: string;
@@ -46,26 +47,31 @@ export default function GDriveGallery({
   props: initProps,
   id,
 }: GDriveGalleryProps) {
-  const [state, setState] = useState<ApiState>({
-    api: false,
-    gsi: false,
-    signed: false,
-  });
   const [props, setProps] = useState<DisplayConfig>(
     id ? { ...(initProps ?? defaultDisplayProps), id } : defaultDisplayProps
   );
   const [open, setOpen] = useState(true);
+  const [state, setState] = useState<GoogleAPIState>({
+    api: false,
+    gsi: false,
+    signed: false,
+  });
+  const token = useRef<google.accounts.oauth2.TokenClient | null>(null);
+  const [status, setStatus] = useState<Status | null>(null);
+  const configId = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     if (!props.id || !state.api) return;
     getConfigFile(props.id)
       .then((p) => {
-        if (p)
-          setProps({ ...mergeProps(p, defaultDisplayProps), id: props.id });
+        if (p) {
+          configId.current = p[0];
+          setProps({ ...mergeProps(p[1], defaultDisplayProps), id: props.id });
+        }
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
-        // console.error(e);
+        configId.current = undefined;
         console.warn("Error getting config");
       });
   }, [props.id, state.api]);
@@ -80,9 +86,19 @@ export default function GDriveGallery({
             height: "100%",
           }}
         >
-          <TopMenu props={props} setOpen={setOpen} setProps={setProps} />
+          <TopMenu
+            props={props}
+            setOpen={setOpen}
+            setProps={setProps}
+            state={state}
+            setState={setState}
+            token={token.current}
+            onSignOut={() => setState((prev) => ({ ...prev, signed: false }))}
+            setStatus={setStatus}
+            configId={configId}
+          />
           <Divider />
-          <SideMenu props={props} setProps={setProps} />
+          <SideMenu props={props} setProps={setProps} state={state} />
         </Stack>
       </Drawer>
       <Stack
@@ -120,53 +136,40 @@ export default function GDriveGallery({
           <SkeletonDriveGallery props={props} />
         )}
       </Stack>
-      <Script
-        src="https://apis.google.com/js/api.js"
-        onLoad={() => {
-          if (gapi.client?.drive) {
-            setState((prev) => ({ ...prev, api: true }));
-            return;
-          }
-          gapiScriptLoad(
-            process.env.NEXT_PUBLIC_apiKey as string,
-            discoveryDocs,
-            () => {
-              if (id) {
-                getConfigFile(id)
-                  .then((res) => {
-                    if (res) setProps(mergeProps(res, props));
-                  })
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                  .catch((e) => {
-                    console.warn("Error getting config");
-                  })
-                  .finally(() => {
-                    setState((prev) => ({ ...prev, api: true }));
-                  });
-              } else setState((prev) => ({ ...prev, api: true }));
+      {status && (
+        <Snackbar
+          open={status !== null}
+          autoHideDuration={6000}
+          onClose={() => setStatus(null)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <Alert
+            severity={status.severity as AlertColor}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => setStatus(null)}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
             }
-          );
-        }}
-        // onReady={() => {
-        //   if (gapi.client?.drive) setState({ api: true });
-        // }}
+          >
+            {status.message}
+          </Alert>
+        </Snackbar>
+      )}
+      <GoogleScriptsSpecifics
+        setState={setState}
+        setError={(e) => setStatus({ severity: "error", message: e })}
+        scopes={scopes}
+        discoveryDocs={discoveryDocs}
+        token={token}
       />
-      {/* <Script
-        src="https://accounts.google.com/gsi/client"
-        onLoad={() => {
-          gsiScriptLoad(
-            process.env.NEXT_PUBLIC_client_id as string,
-            scopes,
-            (resp) => {
-              gsiCallbackAllScopes(
-                resp,
-                scopes,
-                () => setState((prev) => ({ ...prev, signed: true })),
-                (error) => setError?.(error)
-              );
-            }
-        }}
-      /> */}
     </>
   );
 }

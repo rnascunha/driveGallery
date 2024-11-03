@@ -1,3 +1,4 @@
+import { createFile, updateFileContent } from "@/lib/google/drive";
 import { DisplayConfig } from "./types";
 
 const base = `${process.env.NEXT_PUBLIC_gallery_address}`;
@@ -61,11 +62,45 @@ export async function getConfigFile(id: string) {
       fileId: fid as string,
       alt: "media",
     });
-    return file.result as Partial<DisplayConfig>;
+    return [fid, file.result] as [string, Partial<DisplayConfig>];
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined;
   }
+}
+
+export async function uploadConfig(
+  props: DisplayConfig,
+  fileId: string | undefined
+) {
+  const body = JSON.stringify(props);
+  if (fileId) {
+    return updateFileContent(fileId, body, "application/json");
+  }
+  const metadata = {
+    name: "config.json",
+    mimeType: "application/json",
+    parents: [props.id],
+  };
+
+  const resp = await createFile(metadata, body);
+  return resp;
+}
+
+export async function listFiles(id: string) {
+  const token = gapi.client.getToken();
+  gapi.client.setToken(null);
+  return gapi.client.drive.files
+    .list({
+      pageSize: 100,
+      fields: "files(id, name, description)",
+      q: `('${id}' in parents) and trashed = false and (mimeType contains 'image/')`,
+      spaces: "drive",
+    })
+    .then((res) => {
+      gapi.client.setToken(token);
+      return res;
+    });
 }
 
 export function driveImageURL(id: string, width: number) {

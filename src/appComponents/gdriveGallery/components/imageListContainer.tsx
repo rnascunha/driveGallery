@@ -8,6 +8,7 @@ import GridDisplay from "./gridDisplay";
 import GalleryDisplay from "./galleryDisplay";
 import { ImageListError, ImageListIdDefined } from "./ImageListStatus";
 import { SkeletonDriveGallery } from "./skeleton";
+import { listFiles } from "../functions";
 
 export default function ImageListContainer({
   props,
@@ -23,13 +24,7 @@ export default function ImageListContainer({
     setError(null);
     if (!props.id) return;
 
-    gapi.client.drive.files
-      .list({
-        pageSize: 100,
-        fields: "files(id, name, description)",
-        q: `('${props.id}' in parents) and trashed = false and (mimeType contains 'image/')`,
-        spaces: "drive",
-      })
+    listFiles(props.id)
       .then((f) => {
         setImages(f.result.files as gapi.client.drive.File[]);
       })

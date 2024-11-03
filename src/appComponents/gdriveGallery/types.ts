@@ -1,3 +1,10 @@
+import { AlertColor } from "@mui/material";
+
+export interface Status {
+  severity: AlertColor;
+  message: string;
+}
+
 export const displayTypes = ["grid", "gallery"];
 export type DisplayType = (typeof displayTypes)[number];
 
@@ -101,5 +108,5 @@ export const defaultDisplayProps: DisplayConfig = {
   showImageDescription: true,
   grid: defaultGridProps,
   gallery: defaultGalleryProps,
-  force: false
+  force: false,
 };

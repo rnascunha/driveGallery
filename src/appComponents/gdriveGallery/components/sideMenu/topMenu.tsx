@@ -1,11 +1,24 @@
-import { Divider, IconButton, Stack, Tooltip } from "@mui/material";
+import {
+  CircularProgress,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import { download_string_as_file } from "ts-dom-libs/lib/download";
-import { makeLink, makePropsConfig, mergeProps } from "../../functions";
+import {
+  makeLink,
+  makePropsConfig,
+  mergeProps,
+  uploadConfig,
+} from "../../functions";
 import Link from "next/link";
-import { DisplayConfig } from "../../types";
-import { Dispatch, SetStateAction } from "react";
+import { DisplayConfig, Status } from "../../types";
+import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
 import { filePicker } from "ts-dom-libs/lib/files/openFile";
 import { readFileAsString } from "@/lib/file";
+import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
+import { signIn, signOut } from "ts-dom-libs/lib/google/functions";
 
 import style from "@/lib/styles.module.css";
 
@@ -16,6 +29,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import LogoutIcon from "@mui/icons-material/Logout";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 async function loadJSONFileConfig() {
   const fileList = await filePicker("application/json");
@@ -35,20 +49,74 @@ interface TopMenuProps {
   props: DisplayConfig;
   setProps: Dispatch<SetStateAction<DisplayConfig>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  state: GoogleAPIState;
+  setState: Dispatch<SetStateAction<GoogleAPIState>>;
+  token: google.accounts.oauth2.TokenClient | null;
+  onSignOut: () => void;
+  setStatus: Dispatch<SetStateAction<Status | null>>;
+  configId: MutableRefObject<string | undefined>;
 }
 
-export default function TopMenu({ props, setProps, setOpen }: TopMenuProps) {
+export default function TopMenu({
+  props,
+  setProps,
+  setOpen,
+  state,
+  token,
+  onSignOut,
+  setStatus,
+  configId,
+}: TopMenuProps) {
+  const [updating, setUpdating] = useState(false);
+
+  const updateConfigData = () => {
+    setUpdating(true);
+    uploadConfig(props, configId.current)
+      .then((res) => {
+        if (!("error" in res)) {
+          configId.current = res.id as string;
+          setStatus({
+            severity: "success",
+            message: `Configuration saved! ${res.id as string}`,
+          });
+        } else {
+          setStatus({
+            severity: "error",
+            message: `Error saving! ${res.error.message}`,
+          });
+        }
+      })
+      .catch((e) => {
+        console.error("error", e);
+        setStatus({
+          severity: "error",
+          message: `Error! ${e.message as string}`,
+        });
+      })
+      .finally(() => setUpdating(false));
+  };
+
   return (
     <Stack direction="row" justifyContent="end" alignItems="center">
       <Tooltip title="Login">
-        <IconButton>
-          <AddToDriveIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            disabled={!state.gsi || !token || state.signed}
+            onClick={() => signIn(token as google.accounts.oauth2.TokenClient)}
+          >
+            <AddToDriveIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title="Logout">
-        <IconButton>
-          <LogoutIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            disabled={!state.signed}
+            onClick={() => signOut(onSignOut)}
+          >
+            <LogoutIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Divider orientation="vertical" />
       <Tooltip title="Load configuration">
@@ -61,12 +129,14 @@ export default function TopMenu({ props, setProps, setOpen }: TopMenuProps) {
               console.error(e);
             }
           }}
+          edge="end"
         >
           <UploadFileIcon />
         </IconButton>
       </Tooltip>
       <Tooltip title="Download configuration">
         <IconButton
+          edge="end"
           onClick={() =>
             download_string_as_file(
               JSON.stringify(makePropsConfig(props)),
@@ -77,6 +147,30 @@ export default function TopMenu({ props, setProps, setOpen }: TopMenuProps) {
         >
           <FileDownloadIcon />
         </IconButton>
+      </Tooltip>
+      <Tooltip title="Update configuration">
+        <div style={{
+          height: "40px",
+          width: "40px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          {!updating ? (
+            <IconButton
+              disabled={!state.signed}
+              sx={{
+                mr: 0.3,
+              }}
+              edge="end"
+              onClick={updateConfigData}
+            >
+              <CloudUploadIcon />
+            </IconButton>
+          ) : (
+            <CircularProgress size={25} />
+          )}
+        </div>
       </Tooltip>
       <Divider orientation="vertical" variant="middle" />
       <Tooltip title="Copy link">

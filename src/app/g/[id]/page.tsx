@@ -42,7 +42,8 @@ export default function GalleryPage({
         onLoad={() => {
           if (gapi.client?.drive) {
             getConfigFile(params.id).then((res) => {
-              setProps(res as DisplayConfig);
+              if (res)
+                setProps(res[1] as DisplayConfig);
               setLoading(true);
             });
             return;
@@ -52,7 +53,8 @@ export default function GalleryPage({
             discoveryDocs,
             async () => {
               const res = await getConfigFile(params.id);
-              setProps(res as DisplayConfig);
+              if (res)
+                setProps(res[1] as DisplayConfig);
               setLoading(true);
             }
           );

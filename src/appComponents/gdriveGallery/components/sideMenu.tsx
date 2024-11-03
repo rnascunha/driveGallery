@@ -19,10 +19,13 @@ import AppsIcon from "@mui/icons-material/Apps";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import TitleIcon from "@mui/icons-material/Title";
 import SyncIcon from "@mui/icons-material/Sync";
+// import SearchFolder from "./sideMenu/searchFolder";
+import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
 
 interface SideMenuProps {
   props: DisplayConfig;
   setProps: Dispatch<SetStateAction<DisplayConfig>>;
+  state: GoogleAPIState;
 }
 
 export default function SideMenu({ props, setProps }: SideMenuProps) {
@@ -69,6 +72,7 @@ export default function SideMenu({ props, setProps }: SideMenuProps) {
       }}
       gap={1}
     >
+      {/* <SearchFolder state={state} /> */}
       <TextField
         label="ID"
         value={props.id}

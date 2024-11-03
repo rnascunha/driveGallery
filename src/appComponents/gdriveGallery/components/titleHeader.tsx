@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { DisplayConfig } from "../types";
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { FontType, getFont } from "./fonts";
 import Image from "next/image";
 import { driveImageURL } from "../functions";
+import { SkeletonTitle } from "./skeleton";
 
 interface TitleData {
   title: string | undefined;
@@ -33,8 +34,6 @@ export default function TitleHeader({ props }: TitleHeaderProps) {
   }, [props.id]);
 
   if (title === null && props.logo === "") return;
-  if (title === undefined) {
-  }
 
   return (
     <Stack alignItems="center">
@@ -82,7 +81,7 @@ export default function TitleHeader({ props }: TitleHeaderProps) {
           )}
         </>
       ) : (
-        <CircularProgress />
+        <SkeletonTitle props={props} />
       )}
     </Stack>
   );
