@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { ImageListError, ImageListIdDefined } from "./ImageListStatus";
 import { SkeletonDriveGallery } from "./skeleton";
-import { driveImageURL, listFiles } from "../functions";
+import { driveImageThumnailURL, driveImageURL, listFiles } from "../functions";
 import DisplayImage from "./displayImage/displayImage";
 
 interface DisplayImageContainerProps {
@@ -42,8 +42,9 @@ export default function DisplayImageContainer({
       imagesFile?.map((img) => ({
         id: img.id as string,
         name: img.name as string,
-        url: driveImageURL(img.id as string, 500),
-        thumbnail: driveImageURL(img.id as string, 100),
+        // url: driveImageURL(img.id as string, 500),
+        url: driveImageURL(img.id as string),
+        thumbnail: driveImageThumnailURL(img.id as string, 100),
         description: img.description,
       })) ?? []
     );

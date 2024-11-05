@@ -103,8 +103,12 @@ export async function listFiles(id: string) {
     });
 }
 
-export function driveImageURL(id: string, width: number) {
+export function driveImageThumnailURL(id: string, width: number) {
   return `https://drive.google.com/thumbnail?id=${id}&sz=w${width}`;
+}
+
+export function driveImageURL(id: string) {
+  return `https://drive.google.com/uc?export=view&id=${id}`;
 }
 
 export function urlToId(url: string) {
@@ -182,10 +186,8 @@ async function searchByName(name: string) {
     .list({
       fields: "files(id, name, description)",
       pageSize: 10,
-      // q: `name contains '${name}' and trashed = false and (mimeType = 'application/vnd.google-apps.folder')`,
       q: `name contains '${name}' and trashed = false and mimeType = 'application/vnd.google-apps.folder'`,
       spaces: "drive",
-      // corpora: "user",
     })
     .then((f) => {
       return f.result.files ?? [];

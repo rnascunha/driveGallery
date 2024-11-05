@@ -45,7 +45,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
         ref={ref}
         sx={{
           width: "100%",
-          height: props.grid.variant === "masonry" ? "100%" : "auto",
+          height: props.grid.variant === "woven" ? "100%" : "auto",
           pb: "15px",
           animation: "fadeIn ease 3s",
         }}
@@ -63,7 +63,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
               fill
               priority
               style={{
-                objectFit: props.grid.objectFit as "cover" | "contain",
+                objectFit: props.grid.objectFit,
                 cursor: "pointer",
                 borderRadius: `${props.grid.borderRadius}%`,
               }}
