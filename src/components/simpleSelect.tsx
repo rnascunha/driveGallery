@@ -9,7 +9,7 @@ import {
 
 interface SimpleSelectProps<T extends number | string> {
   label: string;
-  options: T[];
+  options: readonly T[];
   value: T;
   fullWidth?: boolean;
   disabled?: boolean;

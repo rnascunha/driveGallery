@@ -1,26 +1,34 @@
 import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
-import { GalleryProps } from "../types";
-import ReactImageGallery from "react-image-gallery";
+import { GalleryProps, ImageDetail } from "../../types";
+import ReactImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 
 import "react-image-gallery/styles/css/image-gallery.css";
-import "./imageCarousel.css";
-import { driveImageURL, removeFileNameExtension } from "../functions";
-import { IconButton } from "@mui/material";
+
+import { makeDescription } from "../../functions";
+import { IconButton, SxProps } from "@mui/material";
 
 import NotesIcon from "@mui/icons-material/Notes";
+import ImageItem from "./imageItem";
 
-function description(
-  image: gapi.client.drive.File,
-  showImageName: boolean,
-  showImageDescription: boolean
-) {
-  const ret = [];
-  if (image.name && showImageName)
-    ret.push(removeFileNameExtension(image.name));
-  if (image.description && showImageDescription) ret.push(image.description);
-  if (ret.length === 0) return undefined;
-  return ret.join(" - ");
-}
+const buttonStyle: SxProps = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  color: "#fff",
+  filter: "drop-shadow(0 2px 2px #1a1a1a)",
+  transition: "all .3s ease-out",
+  outline: "none",
+  p: "20px",
+  "&:hover": {
+    color: "#337ab7",
+    transform: "scale(1.2)",
+  },
+};
+
+const iconStyle: SxProps = {
+  height: "28px",
+  width: "28px",
+};
 
 function toggleDescritopn(
   gallery: ReactImageGallery,
@@ -34,7 +42,7 @@ function toggleDescritopn(
 interface ImageCarouselProps {
   startIndex?: number;
   props: GalleryProps;
-  images: gapi.client.drive.File[];
+  images: ImageDetail[];
   showImageDescription: boolean;
   showImageName: boolean;
 }
@@ -53,13 +61,16 @@ export default function ImageCarousel({
   const items = useMemo(
     () =>
       images.map((i) => ({
-        original: driveImageURL(i.id as string, 1000),
-        thumbnail: driveImageURL(i.id as string, 100),
-        description: desc
-          ? description(i, showImageName, showImageDescription)
-          : undefined,
-      })),
-    [images, showImageDescription, showImageName, desc]
+        original: i.url,
+        thumbnail: i.thumbnail,
+        originalAlt: i.name,
+        description: makeDescription(
+          i,
+          showImageName,
+          showImageDescription
+        )?.join(" - "),
+      })) as ReactImageGalleryItem[],
+    [images, showImageDescription, showImageName]
   );
 
   return (
@@ -88,34 +99,18 @@ export default function ImageCarousel({
         slideInterval={props.slideInterval}
         autoPlay={props.autoPlay}
         lazyLoad={true}
+        renderItem={(item) => (
+          <ImageItem item={item} props={props} showDescription={desc} />
+        )}
       />
       {props.showToggleDescritopn && (
         <IconButton
           size="large"
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            color: "#fff",
-            filter: "drop-shadow(0 2px 2px #1a1a1a)",
-            transition: "all .3s ease-out",
-            outline: "none",
-            "&:hover": {
-              color: "#337ab7",
-            },
-          }}
+          sx={buttonStyle}
           disableRipple
           onClick={() => toggleDescritopn(ref.current!, setDesc, setIndex)}
         >
-          <NotesIcon
-            sx={{
-              height: "28px",
-              width: "28px",
-              "&:hover:": {
-                transform: "scale(1.1)",
-              },
-            }}
-          />
+          <NotesIcon sx={iconStyle} />
         </IconButton>
       )}
     </div>

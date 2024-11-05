@@ -1,22 +1,46 @@
 "use client";
 
-import ImageListContainer from "@/appComponents/gdriveGallery/components/imageListContainer";
-import {
-  defaultDisplayProps,
-  DisplayConfig,
-} from "@/appComponents/gdriveGallery/types";
+import { DisplayConfig } from "@/appComponents/gdriveGallery/types";
 import Script from "next/script";
 import { useState } from "react";
 import { gapiScriptLoad } from "ts-dom-libs/lib/google/functions";
 import {
   getConfigFile,
+  isDriveId,
   mergeProps,
 } from "@/appComponents/gdriveGallery/functions";
 import { SkeletonDriveGallery } from "@/appComponents/gdriveGallery/components/skeleton";
+import {
+  defaultDisplayProps,
+  discoveryDocs,
+} from "@/appComponents/gdriveGallery/constants";
+import DisplayImageContainer from "@/appComponents/gdriveGallery/components/displayImageContainer";
 
-const discoveryDocs = [
-  "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
-];
+async function getFolder(id: string) {
+  return await gapi.client.drive.files
+    .get({
+      fileId: id,
+      fields: "id, name, description, mimeType",
+    })
+    .then((f) => {
+      if (f.result.mimeType !== "application/vnd.google-apps.folder")
+        return { error: {}, message: `ID '${id}' is not a directory!` };
+      return f.result;
+    })
+    .catch((e) => {
+      return { error: e, message: e.error.message as string };
+    });
+}
+
+async function getData(id: string, props: DisplayConfig) {
+  return Promise.all([getFolder(id), getConfigFile(id)]).then(([f, c]) => {
+    console.log(f, c);
+    return [
+      "error" in f ? null : f,
+      c !== undefined ? mergeProps(c[1], props) : props,
+    ] as [null | gapi.client.drive.File, DisplayConfig];
+  });
+}
 
 export default function GalleryPage({
   params,
@@ -25,38 +49,40 @@ export default function GalleryPage({
     id: string;
   };
 }) {
-  const [loading, setLoading] = useState(false);
+  const [dir, setDir] = useState<gapi.client.drive.File | null | undefined>(
+    isDriveId(params.id) ? undefined : null
+  );
   const [props, setProps] = useState<DisplayConfig>(defaultDisplayProps);
+
+  const call = () =>
+    getData(params.id, props).then(([f, c]) => {
+      setDir(f);
+      setProps(c);
+    });
+
+  if (dir === null) throw new Error(`'${params.id}' is not a valid ID`);
 
   return (
     <>
-      {!loading ? (
+      {dir === undefined ? (
         <SkeletonDriveGallery props={props} />
       ) : (
-        <ImageListContainer
-          props={{ ...mergeProps(props, props), id: params.id }}
+        <DisplayImageContainer
+          dir={dir as gapi.client.drive.File}
+          props={props}
         />
       )}
       <Script
         src="https://apis.google.com/js/api.js"
         onLoad={() => {
           if (gapi.client?.drive) {
-            getConfigFile(params.id).then((res) => {
-              if (res)
-                setProps(res[1] as DisplayConfig);
-              setLoading(true);
-            });
+            call();
             return;
           }
           gapiScriptLoad(
             process.env.NEXT_PUBLIC_apiKey as string,
             discoveryDocs,
-            async () => {
-              const res = await getConfigFile(params.id);
-              if (res)
-                setProps(res[1] as DisplayConfig);
-              setLoading(true);
-            }
+            call
           );
         }}
       />

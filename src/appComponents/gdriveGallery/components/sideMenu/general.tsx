@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { DisplayConfig, displayTypes } from "../../types";
+import { DisplayConfig, DisplayType, displayTypes } from "../../types";
 import { Stack, TextField } from "@mui/material";
 import SimpleSelect from "@/components/simpleSelect";
 import { debounce } from "ts-dom-libs/lib/debounce";
@@ -52,7 +52,7 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
           onChange={(ev) =>
             setProps((prev) => ({
               ...prev,
-              type: ev.target.value,
+              type: ev.target.value as DisplayType,
             }))
           }
         />

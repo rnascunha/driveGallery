@@ -21,6 +21,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import SimpleSelect from "@/components/simpleSelect";
 
 function SelectColumnType({
   columnType,
@@ -45,7 +46,7 @@ function SelectColumnType({
         },
       }}
       value={columnType}
-      onChange={(ev) => updateValue(ev.target.value)}
+      onChange={(ev) => updateValue(ev.target.value as ColumnType)}
     >
       <MenuItem value="fixed">cols</MenuItem>
       <MenuItem value="dinamic">px</MenuItem>
@@ -72,29 +73,17 @@ export default function GridMenu({ props, setProps }: GridMenuProps) {
   return (
     <>
       <Stack direction="row" alignItems="center" gap={1.5}>
-        <FormControl
-          size="small"
+        <SimpleSelect
+          label="Image Fit"
+          value={props.grid.objectFit}
+          onChange={(ev) =>
+            updateValue("objectFit", ev.target.value as ObjectFit)
+          }
+          options={objectFit}
           sx={{
             width: "11ch",
           }}
-        >
-          <InputLabel id="image-fit-label">Image Fit</InputLabel>
-          <Select
-            labelId="image-fit-label"
-            id="image-fit"
-            value={props.grid.objectFit}
-            label="Image Fit"
-            onChange={(ev) =>
-              updateValue("objectFit", ev.target.value as ObjectFit)
-            }
-          >
-            {objectFit.map((t) => (
-              <MenuItem key={t} value={t}>
-                {t}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        />
         <Tooltip title="Border Radius">
           <Slider
             aria-label="border-radius"

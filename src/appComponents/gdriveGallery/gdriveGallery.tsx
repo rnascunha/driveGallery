@@ -14,8 +14,7 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 
-import ImageListContainer from "./components/imageListContainer";
-import { defaultDisplayProps, DisplayConfig, Status } from "./types";
+import { DisplayConfig, Status } from "./types";
 
 import TopMenu from "./components/sideMenu/topMenu";
 import SideMenu from "./components/sideMenu";
@@ -29,12 +28,8 @@ import { GoogleScriptsSpecifics } from "./components/google/googleSpecific";
 import MenuIcon from "@mui/icons-material/Menu";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-
-const discoveryDocs = [
-  "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
-];
-
-const scopes = ["https://www.googleapis.com/auth/drive.file"];
+import { defaultDisplayProps, discoveryDocs, scopes } from "./constants";
+import DisplayImageContainer from "./components/displayImageContainer";
 
 const width = 300;
 
@@ -47,8 +42,9 @@ export default function GDriveGallery({
   props: initProps,
   id,
 }: GDriveGalleryProps) {
+  const [dir, setDir] = useState<gapi.client.drive.File | null>(null);
   const [props, setProps] = useState<DisplayConfig>(
-    id ? { ...(initProps ?? defaultDisplayProps), id } : defaultDisplayProps
+    initProps ?? defaultDisplayProps
   );
   const [open, setOpen] = useState(true);
   const [state, setState] = useState<GoogleAPIState>({
@@ -61,12 +57,36 @@ export default function GDriveGallery({
   const configId = useRef<string | undefined>(undefined);
 
   useEffect(() => {
-    if (!props.id || !state.api) return;
-    getConfigFile(props.id)
+    if (!id) return;
+    if (!state.api) return;
+    gapi.client.drive.files
+      .get({
+        fileId: id,
+        fields: "id, name, description, mimeType",
+      })
+      .then((f) => {
+        if (f.result.mimeType !== "application/vnd.google-apps.folder") {
+          setStatus({
+            severity: "warning",
+            message: `ID '${id}' is not a directory!`,
+          });
+          return;
+        }
+        setDir(f.result);
+      })
+      .catch((e) => {
+        console.error(e);
+        setStatus({ severity: "error", message: `Error requesting ID ${id}` });
+      });
+  }, [id, state.api]);
+
+  useEffect(() => {
+    if (!dir?.id || !state.api) return;
+    getConfigFile(dir.id)
       .then((p) => {
         if (p) {
           configId.current = p[0];
-          setProps({ ...mergeProps(p[1], defaultDisplayProps), id: props.id });
+          setProps(mergeProps(p[1], defaultDisplayProps));
         }
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -74,7 +94,7 @@ export default function GDriveGallery({
         configId.current = undefined;
         console.warn("Error getting config");
       });
-  }, [props.id, state.api]);
+  }, [dir, state.api]);
 
   return (
     <>
@@ -87,6 +107,7 @@ export default function GDriveGallery({
           }}
         >
           <TopMenu
+            dir={dir}
             props={props}
             setOpen={setOpen}
             setProps={setProps}
@@ -98,7 +119,13 @@ export default function GDriveGallery({
             configId={configId}
           />
           <Divider />
-          <SideMenu props={props} setProps={setProps} state={state} />
+          <SideMenu
+            dir={dir}
+            setDir={setDir}
+            props={props}
+            setProps={setProps}
+            state={state}
+          />
         </Stack>
       </Drawer>
       <Stack
@@ -131,7 +158,7 @@ export default function GDriveGallery({
           )}
         </Stack>
         {state.api ? (
-          <ImageListContainer props={props} />
+          <DisplayImageContainer dir={dir} props={props} />
         ) : (
           <SkeletonDriveGallery props={props} />
         )}

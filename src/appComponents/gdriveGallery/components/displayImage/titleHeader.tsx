@@ -1,39 +1,17 @@
-import { useEffect, useState } from "react";
-import { DisplayConfig } from "../types";
+import { DisplayConfig } from "../../types";
 import { Stack, Typography } from "@mui/material";
-import { FontType, getFont } from "./fonts";
+import { FontType, getFont } from "../fonts";
 import Image from "next/image";
-import { driveImageURL } from "../functions";
-import { SkeletonTitle } from "./skeleton";
-
-interface TitleData {
-  title: string | undefined;
-  description: string | undefined;
-}
+import { driveImageURL } from "../../functions";
+import { SkeletonTitle } from "../skeleton";
 
 interface TitleHeaderProps {
+  dir: gapi.client.drive.File | null;
   props: DisplayConfig;
 }
 
-export default function TitleHeader({ props }: TitleHeaderProps) {
-  const [title, setTitle] = useState<TitleData | undefined | null>(undefined);
-
-  useEffect(() => {
-    gapi.client.drive.files
-      .get({
-        fileId: props.id,
-        fields: "name, description",
-      })
-      .then((e) => {
-        setTitle({ title: e.result.name, description: e.result.description });
-      })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .catch((e) => {
-        setTitle(null);
-      });
-  }, [props.id]);
-
-  if (title === null && props.logo === "") return;
+export default function TitleHeader({ dir, props }: TitleHeaderProps) {
+  if (!dir && !props.logo) return;
 
   return (
     <Stack alignItems="center">
@@ -55,9 +33,9 @@ export default function TitleHeader({ props }: TitleHeaderProps) {
           />
         </div>
       )}
-      {title ? (
+      {dir ? (
         <>
-          {title.title && props.showTitle && (
+          {dir.name && props.showTitle && (
             <Typography
               variant="h2"
               component="h2"
@@ -66,17 +44,17 @@ export default function TitleHeader({ props }: TitleHeaderProps) {
                 fontFamily: getFont(props.fontFamily as FontType),
               }}
             >
-              {title.title}
+              {dir.name}
             </Typography>
           )}
-          {title.description && props.showDescription && (
+          {dir.description && props.showDescription && (
             <Typography
               sx={{
                 textAlign: "center",
                 fontFamily: getFont(props.fontFamily as FontType),
               }}
             >
-              {title.description}
+              {dir.description}
             </Typography>
           )}
         </>

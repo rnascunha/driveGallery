@@ -1,5 +1,5 @@
 import { Stack, TextField } from "@mui/material";
-import { DisplayConfig, GalleryProps, thumbnailsPositions } from "../../types";
+import { DisplayConfig, GalleryProps, objectFit, ObjectFit, thumbnailsPositions } from "../../types";
 import { Dispatch, SetStateAction } from "react";
 import SimpleSelect from "@/components/simpleSelect";
 import CompactCheckbox from "@/components/compactCheckbox";
@@ -65,7 +65,7 @@ export default function GalleryMenu({ props, setProps }: GalleryMenuProps) {
           onChange={(ck) => updateValue("autoPlay", ck)}
         />
         <TextField
-          label="Slide Duration"
+          label="Transition (ms)"
           value={props.gallery.slideDuration}
           size="small"
           type="number"
@@ -75,7 +75,7 @@ export default function GalleryMenu({ props, setProps }: GalleryMenuProps) {
           }}
         />
         <TextField
-          label="Slide Interval"
+          label="Interval (ms)"
           value={props.gallery.slideInterval}
           size="small"
           type="number"
@@ -85,6 +85,7 @@ export default function GalleryMenu({ props, setProps }: GalleryMenuProps) {
           }}
         />
       </Stack>
+      <Stack direction="row" gap={0.5}>
       <SimpleSelect
         value={props.gallery.thumbnailsPosition}
         options={thumbnailsPositions}
@@ -94,6 +95,18 @@ export default function GalleryMenu({ props, setProps }: GalleryMenuProps) {
           flex: 1,
         }}
       />
+      <SimpleSelect
+        label="Image Fit"
+        value={props.gallery.objectFit}
+        onChange={(ev) =>
+          updateValue("objectFit", ev.target.value as ObjectFit)
+        }
+        options={objectFit}
+        sx={{
+          width: "11ch",
+        }}
+      />
+      </Stack>
     </Stack>
   );
 }

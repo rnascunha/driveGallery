@@ -5,22 +5,28 @@ export interface Status {
   message: string;
 }
 
-export const displayTypes = ["grid", "gallery"];
+export const displayTypes = ["grid", "gallery"] as const;
 export type DisplayType = (typeof displayTypes)[number];
 
 export const gridVariants = ["standard", "woven", "masonry"] as const;
 export type GridVariant = (typeof gridVariants)[number];
 
-export const positionTitles = ["none", "below", "bottom", "top"];
+export const positionTitles = ["none", "below", "bottom", "top"] as const;
 export type PositionTitle = (typeof positionTitles)[number];
 
-export const objectFit = ["cover", "contain"];
+export const objectFit = ["cover", "contain"] as const;
 export type ObjectFit = (typeof objectFit)[number];
 
-export const columnTypes = ["fixed", "dinamic"];
+export const columnTypes = ["fixed", "dinamic"] as const;
 export type ColumnType = (typeof columnTypes)[number];
 
-export const thumbnailsPositions = ["none", "top", "right", "bottom", "left"];
+export const thumbnailsPositions = [
+  "none",
+  "top",
+  "right",
+  "bottom",
+  "left",
+] as const;
 export type ThumbnailsPosition = (typeof thumbnailsPositions)[number];
 
 export interface GridProps {
@@ -48,10 +54,10 @@ export interface GalleryProps {
   thumbnailsPosition: ThumbnailsPosition;
   slideDuration: number;
   slideInterval: number;
+  objectFit: ObjectFit;
 }
 
 export interface DisplayConfig {
-  id: string;
   type: DisplayType;
   backgroundColor: string;
   logo: string;
@@ -67,46 +73,10 @@ export interface DisplayConfig {
   force: boolean;
 }
 
-const defaultGridProps: GridProps = {
-  variant: "standard",
-  objectFit: "cover",
-  borderRadius: 0,
-  gap: 1,
-  columnType: "dinamic",
-  cols: 4,
-  colWidth: 300,
-  rows: 10,
-  rowHeight: 300,
-  positionTitle: "none",
-};
-
-export const defaultGalleryProps: GalleryProps = {
-  showPlay: false,
-  showBullets: true,
-  infinite: true,
-  showFullscreenButton: true,
-  showToggleDescritopn: false,
-  showNav: true,
-  showIndex: true,
-  autoPlay: false,
-  thumbnailsPosition: "bottom",
-  slideDuration: 450,
-  slideInterval: 3000,
-};
-
-export const defaultDisplayProps: DisplayConfig = {
-  id: "",
-  type: "grid",
-  maxWidth: 1000,
-  color: "#000000",
-  backgroundColor: "#ffffff",
-  logo: "",
-  fontFamily: "Roboto",
-  showTitle: true,
-  showDescription: true,
-  showImageName: true,
-  showImageDescription: true,
-  grid: defaultGridProps,
-  gallery: defaultGalleryProps,
-  force: false,
-};
+export interface ImageDetail {
+  id: string;
+  name: string;
+  url: string;
+  thumbnail: string;
+  description?: string;
+}
