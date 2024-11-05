@@ -48,3 +48,28 @@ export default function ImageItem({
     </div>
   );
 }
+
+export function ImageThumnail({ item }: { item: ReactImageGalleryItem }) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "auto",
+      }}
+    >
+      <Image
+        src={item.thumbnail as string}
+        width={document.fullscreenElement !== null ? 100 : 200}
+        height={0}
+        sizes="100w"
+        alt={item.originalAlt as string}
+        style={{
+          width: "100%",
+          height: "auto",
+          verticalAlign: "middle",
+        }}
+      />
+    </div>
+  );
+}

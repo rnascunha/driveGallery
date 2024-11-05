@@ -8,7 +8,7 @@ import { makeDescription } from "../../functions";
 import { IconButton, SxProps } from "@mui/material";
 
 import NotesIcon from "@mui/icons-material/Notes";
-import ImageItem from "./imageItem";
+import ImageItem, { ImageThumnail } from "./imageItem";
 
 const buttonStyle: SxProps = {
   position: "absolute",
@@ -102,6 +102,7 @@ export default function ImageCarousel({
         renderItem={(item) => (
           <ImageItem item={item} props={props} showDescription={desc} />
         )}
+        renderThumbInner={(i) => <ImageThumnail item={i} />}
       />
       {props.showToggleDescritopn && (
         <IconButton
