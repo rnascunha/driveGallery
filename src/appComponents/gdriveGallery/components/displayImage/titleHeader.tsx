@@ -2,8 +2,31 @@ import { DisplayConfig } from "../../types";
 import { Stack, Typography } from "@mui/material";
 import { FontType, getFont } from "../fonts";
 import Image from "next/image";
-import { driveImageURL } from "../../functions";
 import { SkeletonTitle } from "../skeleton";
+import { driveImageURL } from "@/lib/google/driveUtils";
+
+function Logo({ props }: { props: DisplayConfig }) {
+  return (
+    props.logo && (
+      <div
+        style={{
+          position: "relative",
+          height: "50px",
+          width: "100%",
+        }}
+      >
+        <Image
+          alt={props.logo}
+          src={driveImageURL(props.logo)}
+          fill
+          style={{
+            objectFit: "contain",
+          }}
+        />
+      </div>
+    )
+  );
+}
 
 interface TitleHeaderProps {
   dir: gapi.client.drive.File | null;
@@ -15,24 +38,7 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
 
   return (
     <Stack alignItems="center">
-      {props.logo && (
-        <div
-          style={{
-            position: "relative",
-            height: "50px",
-            width: "100%",
-          }}
-        >
-          <Image
-            alt={props.logo}
-            src={driveImageURL(props.logo, 100)}
-            fill
-            style={{
-              objectFit: "contain",
-            }}
-          />
-        </div>
-      )}
+      <Logo props={props} />
       {dir ? (
         <>
           {dir.name && props.showTitle && (
@@ -59,7 +65,7 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
           )}
         </>
       ) : (
-        <SkeletonTitle props={props} />
+        <SkeletonTitle />
       )}
     </Stack>
   );

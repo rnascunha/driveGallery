@@ -1,4 +1,4 @@
-import { driveImageURL } from "@/appComponents/gdriveGallery/functions";
+import { driveImageThumbnailURL } from "@/lib/google/driveUtils";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 
@@ -7,7 +7,7 @@ const baseDriveFiles = "https://www.googleapis.com/drive/v3/files";
 async function getTitleInfo(id: string) {
   const response = await fetch(
     `${baseDriveFiles}/${id}?key=${process.env.NEXT_PUBLIC_apiKey}&fields=name,description`
-  );  
+  );
   return await response.json();
 }
 
@@ -44,7 +44,7 @@ export async function generateMetadata({
         images: [
           image.files.length === 1
             ? {
-                url: driveImageURL(image.files[0].id, 400),
+                url: driveImageThumbnailURL(image.files[0].id, 400),
                 width: 400,
               }
             : {

@@ -5,6 +5,8 @@ import GridDisplay from "./gridDisplay";
 import CenterContainer from "@/components/centerContainer";
 import TitleHeader from "./titleHeader";
 import { FontType, getFont } from "../fonts";
+import FullHeightDisplay from "./fullHeightDisplay";
+import { Box, Stack } from "@mui/material";
 
 interface ImageDisplayProps {
   dir: gapi.client.drive.File;
@@ -17,6 +19,38 @@ export default function DisplayImage({
   images,
   props,
 }: ImageDisplayProps) {
+  if (props.type === "fullHeight") {
+    return (
+      <Box
+        sx={{
+          animation: "fadeIn ease 3s",
+          fontFamily: getFont(props.fontFamily as FontType),
+          color: props.color,
+          backgroundColor: props.backgroundColor,
+          width: "100wh",
+          height: "100vh",
+        }}
+      >
+        <CenterContainer
+          maxWidth={props.maxWidth}
+          sx={{
+            px: 0,
+          }}
+        >
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              height: "100%",
+            }}
+          >
+            <FullHeightDisplay dir={dir} images={images} props={props} />
+          </Stack>
+        </CenterContainer>
+      </Box>
+    );
+  }
+
   return (
     <ScrollContainer
       sx={{

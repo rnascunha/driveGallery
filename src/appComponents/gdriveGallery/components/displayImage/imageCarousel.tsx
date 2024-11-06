@@ -5,30 +5,9 @@ import ReactImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 import { makeDescription } from "../../functions";
-import { IconButton, SxProps } from "@mui/material";
 
-import NotesIcon from "@mui/icons-material/Notes";
 import ImageItem, { ImageThumnail } from "./imageItem";
-
-const buttonStyle: SxProps = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  color: "#fff",
-  filter: "drop-shadow(0 2px 2px #1a1a1a)",
-  transition: "all .3s ease-out",
-  outline: "none",
-  p: "20px",
-  "&:hover": {
-    color: "#337ab7",
-    transform: "scale(1.2)",
-  },
-};
-
-const iconStyle: SxProps = {
-  height: "28px",
-  width: "28px",
-};
+import ToggleDescritopnButton from "./toggleDescriptionButton";
 
 function toggleDescritopn(
   gallery: ReactImageGallery,
@@ -105,14 +84,9 @@ export default function ImageCarousel({
         renderThumbInner={(i) => <ImageThumnail item={i} />}
       />
       {props.showToggleDescritopn && (
-        <IconButton
-          size="large"
-          sx={buttonStyle}
-          disableRipple
+        <ToggleDescritopnButton
           onClick={() => toggleDescritopn(ref.current!, setDesc, setIndex)}
-        >
-          <NotesIcon sx={iconStyle} />
-        </IconButton>
+        />
       )}
     </div>
   );

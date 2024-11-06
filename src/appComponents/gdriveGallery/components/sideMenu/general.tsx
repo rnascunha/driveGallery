@@ -39,7 +39,7 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
             },
           }}
           sx={{
-            flex: 1,
+            width: "10ch"
           }}
         />
         <SimpleSelect
@@ -63,7 +63,7 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
           value={props.backgroundColor}
           onChange={(ev) => colorBgChange(ev.target.value, "backgroundColor")}
           sx={{
-            flex: 1,
+            width: "60px",
           }}
         />
       </Stack>

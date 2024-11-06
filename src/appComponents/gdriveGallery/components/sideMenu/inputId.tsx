@@ -2,11 +2,9 @@ import { CircularProgress, TextField } from "@mui/material";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  isDriveFolder,
-  isDriveId,
   searchByFolderId,
-  urlFolderToId,
 } from "../../functions";
+import { isDriveFolder, isDriveId, urlFolderToId } from "@/lib/google/driveUtils";
 
 interface InputIdProps {
   dir: gapi.client.drive.File | null;

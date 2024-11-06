@@ -5,7 +5,7 @@ import SimpleSelect from "@/components/simpleSelect";
 import { debounce } from "ts-dom-libs/lib/debounce";
 import { fontFamily } from "../fonts";
 import { SwitchLabel } from "../../../../components/switch";
-import { urlToId } from "../../functions";
+import { urlToId } from "@/lib/google/driveUtils";
 
 interface HeaderMenuProps {
   props: DisplayConfig;

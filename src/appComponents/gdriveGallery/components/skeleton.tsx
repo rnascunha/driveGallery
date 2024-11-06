@@ -13,19 +13,22 @@ interface Props {
   props: DisplayConfig;
 }
 
-export function SkeletonTitle({ props }: Props) {
+export function SkeletonLogo() {
+  return (
+    <Skeleton
+      variant="rounded"
+      sx={{
+        mt: 1,
+        heigth: "50px",
+        width: "125px",
+      }}
+    />
+  );
+}
+
+export function SkeletonTitle() {
   return (
     <>
-      {props.logo && (
-        <Skeleton
-          variant="rounded"
-          sx={{
-            mt: 1,
-            heigth: "50px",
-            width: "150px",
-          }}
-        />
-      )}
       <Typography
         component="div"
         variant="h2"
@@ -108,11 +111,15 @@ export function SkeletonGallery() {
 export function SkeletonDriveGallery({ props }: Props) {
   return (
     <ScrollContainer>
-      <CenterContainer maxWidth={props.maxWidth} sx={{
-        overflow: "hidden"
-      }}>
+      <CenterContainer
+        maxWidth={props.maxWidth}
+        sx={{
+          overflow: "hidden",
+        }}
+      >
         <Stack alignItems="center" flex={1}>
-          <SkeletonTitle props={props} />
+          <SkeletonLogo />
+          <SkeletonTitle />
           {props.type === "grid" ? (
             <SkeletonGrid props={props} />
           ) : (

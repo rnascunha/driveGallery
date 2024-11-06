@@ -6,8 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { ImageListError, ImageListIdDefined } from "./ImageListStatus";
 import { SkeletonDriveGallery } from "./skeleton";
-import { driveImageThumnailURL, driveImageURL, listFiles } from "../functions";
+import { listFiles } from "../functions";
 import DisplayImage from "./displayImage/displayImage";
+import { driveImageThumbnailURL, driveImageURL } from "@/lib/google/driveUtils";
 
 interface DisplayImageContainerProps {
   dir: gapi.client.drive.File | null;
@@ -35,16 +36,15 @@ export default function DisplayImageContainer({
         setImagesFiles(undefined);
         setError(e.result.error.message);
       });
-  }, [dir, props.force]);
+  }, [dir]);
 
   const images = useMemo(() => {
     return (
       imagesFile?.map((img) => ({
         id: img.id as string,
         name: img.name as string,
-        // url: driveImageURL(img.id as string, 500),
         url: driveImageURL(img.id as string),
-        thumbnail: driveImageThumnailURL(img.id as string, 100),
+        thumbnail: driveImageThumbnailURL(img.id as string, 100),
         description: img.description,
       })) ?? []
     );

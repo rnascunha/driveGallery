@@ -6,7 +6,6 @@ import { useState } from "react";
 import { gapiScriptLoad } from "ts-dom-libs/lib/google/functions";
 import {
   getConfigFile,
-  isDriveId,
   mergeProps,
 } from "@/appComponents/gdriveGallery/functions";
 import { SkeletonDriveGallery } from "@/appComponents/gdriveGallery/components/skeleton";
@@ -15,6 +14,7 @@ import {
   discoveryDocs,
 } from "@/appComponents/gdriveGallery/constants";
 import DisplayImageContainer from "@/appComponents/gdriveGallery/components/displayImageContainer";
+import { isDriveId } from "@/lib/google/driveUtils";
 
 async function getFolder(id: string) {
   return await gapi.client.drive.files

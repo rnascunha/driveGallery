@@ -1,3 +1,4 @@
+import { ValueUnit } from "@/components/inputUnit";
 import { AlertColor } from "@mui/material";
 
 export interface Status {
@@ -5,7 +6,7 @@ export interface Status {
   message: string;
 }
 
-export const displayTypes = ["grid", "gallery"] as const;
+export const displayTypes = ["grid", "gallery", "fullHeight"] as const;
 export type DisplayType = (typeof displayTypes)[number];
 
 export const gridVariants = ["standard", "woven", "masonry"] as const;
@@ -29,6 +30,9 @@ export const thumbnailsPositions = [
 ] as const;
 export type ThumbnailsPosition = (typeof thumbnailsPositions)[number];
 
+export const borderRadiusUnits = ["px", "%"] as const;
+export type BorderRadiusUnit = (typeof borderRadiusUnits)[number];
+
 export interface GridProps {
   objectFit: ObjectFit;
   borderRadius: number;
@@ -37,7 +41,6 @@ export interface GridProps {
   columnType: ColumnType;
   cols: number;
   colWidth: number;
-  rows: number;
   rowHeight: number;
   positionTitle: PositionTitle;
 }
@@ -55,6 +58,23 @@ export interface GalleryProps {
   slideDuration: number;
   slideInterval: number;
   objectFit: ObjectFit;
+  height: `${number}${"px" | "vh"}`;
+}
+
+export interface FullHeightProps {
+  showPlay: boolean;
+  showBullets: boolean;
+  infinite: boolean;
+  showNav: boolean;
+  showIndex: boolean;
+  showFullscreenButton: boolean;
+  showToggleDescritopn: boolean;
+  autoPlay: boolean;
+  slideDuration: number;
+  slideInterval: number;
+  objectFit: ObjectFit;
+  height: `${number}${"px" | "vh"}`;
+  borderRadius: ValueUnit<BorderRadiusUnit>;
 }
 
 export interface DisplayConfig {
@@ -70,7 +90,7 @@ export interface DisplayConfig {
   showImageDescription: boolean;
   grid: GridProps;
   gallery: GalleryProps;
-  force: boolean;
+  fullHeight: FullHeightProps;
 }
 
 export interface ImageDetail {
