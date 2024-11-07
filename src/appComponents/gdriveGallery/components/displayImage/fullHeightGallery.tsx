@@ -80,7 +80,7 @@ export default function FullHeightGallery({
         onSlide={(i) => setIndex(i)}
       />
       {propsH.showToggleDescritopn && (
-        <ToggleDescritopnButton onClick={() => setDesc((prev) => !prev)} />
+        <ToggleDescritopnButton show={desc} onClick={() => setDesc((prev) => !prev)} />
       )}
     </div>
   );

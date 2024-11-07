@@ -73,7 +73,10 @@ export default function ImageCarousel({
         onSlide={(i) => setIndex(i)}
       />
       {props.gallery.showToggleDescritopn && (
-        <ToggleDescritopnButton onClick={() => setDesc((prev) => !prev)} />
+        <ToggleDescritopnButton
+          show={desc}
+          onClick={() => setDesc((prev) => !prev)}
+        />
       )}
     </div>
   );

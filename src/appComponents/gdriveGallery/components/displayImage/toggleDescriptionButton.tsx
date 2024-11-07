@@ -1,6 +1,7 @@
 import { IconButton, SxProps } from "@mui/material";
 
-import NotesIcon from "@mui/icons-material/Notes";
+import SpeakerNotesIcon from "@mui/icons-material/SpeakerNotes";
+import SpeakerNotesOffIcon from "@mui/icons-material/SpeakerNotesOff";
 
 const buttonStyle: SxProps = {
   position: "absolute",
@@ -22,15 +23,20 @@ const iconStyle: SxProps = {
   width: "28px",
 };
 
-export default function ToggleDescritopnButton({onClick}: {onClick: () => void}) {
+export default function ToggleDescritopnButton({
+  show,
+  onClick,
+}: {
+  show: boolean;
+  onClick: () => void;
+}) {
   return (
-    <IconButton
-      size="large"
-      sx={buttonStyle}
-      disableRipple
-      onClick={onClick}
-    >
-      <NotesIcon sx={iconStyle} />
+    <IconButton size="large" sx={buttonStyle} disableRipple onClick={onClick}>
+      {show ? (
+        <SpeakerNotesIcon sx={iconStyle} />
+      ) : (
+        <SpeakerNotesOffIcon sx={iconStyle} />
+      )}
     </IconButton>
   );
 }
