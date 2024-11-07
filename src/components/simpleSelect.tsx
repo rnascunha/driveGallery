@@ -7,9 +7,14 @@ import {
   SxProps,
 } from "@mui/material";
 
-interface SimpleSelectProps<T extends number | string> {
+interface MenuValue<T extends string | number> {
+  value: T;
+  label: T;
+}
+
+interface SimpleSelectProps<T extends string | number> {
   label: string;
-  options: readonly T[];
+  options: readonly (T | MenuValue<T>)[];
   value: T;
   fullWidth?: boolean;
   disabled?: boolean;
@@ -37,11 +42,14 @@ export default function SimpleSelect<T extends number | string>({
         label={label}
         onChange={onChange}
       >
-        {options.map((op) => (
-          <MenuItem key={op} value={op}>
-            {op}
-          </MenuItem>
-        ))}
+        {options.map((op) => {
+          const o = typeof op === "object" ? op : { value: op, label: op };
+          return (
+            <MenuItem key={o.value} value={o.value}>
+              {o.label}
+            </MenuItem>
+          );
+        })}
       </Select>
     </FormControl>
   );

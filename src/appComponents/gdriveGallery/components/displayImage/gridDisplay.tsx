@@ -4,15 +4,36 @@ import {
   ImageListItemBar,
   Modal,
   Stack,
+  Typography,
 } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { DisplayConfig, ImageDetail } from "../../types";
 import ImageCarousel from "./imageCarousel";
-import { FontType, getFont } from "../fonts";
 
 import "./imgAnimation.css";
-import { removeFileNameExtension } from "../../functions";
+import { makeStyle, removeFileNameExtension } from "../../functions";
+
+function makeTitle(img: ImageDetail, props: DisplayConfig) {
+  return props.imageName ? (
+    <Typography sx={makeStyle(props.imageName)}>
+      {removeFileNameExtension(img.name as string)}
+    </Typography>
+  ) : (
+    <Typography sx={makeStyle(props.imageDescription)}>
+      {img.description as string}
+    </Typography>
+  );
+}
+
+function makeDescription(img: ImageDetail, props: DisplayConfig) {
+  return !props.imageName ? undefined : props.imageDescription &&
+    img.description ? (
+    <Typography sx={makeStyle(props.imageDescription)}>
+      {img.description}
+    </Typography>
+  ) : undefined;
+}
 
 interface GridDisplayProps {
   props: DisplayConfig;
@@ -70,27 +91,15 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
               onClick={() => setOpen(i)}
             />
             {props.grid.positionTitle !== "none" &&
-              (props.showImageName ||
-                (props.showImageDescription && img.description)) && (
+              (props.imageName ||
+                (props.imageDescription && img.description)) && (
                 <ImageListItemBar
                   position={
                     props.grid.positionTitle as "bottom" | "top" | "below"
                   }
-                  sx={{
-                    fontFamily: getFont(props.fontFamily as FontType),
-                  }}
-                  title={
-                    props.showImageName
-                      ? removeFileNameExtension(img.name as string)
-                      : (img.description as string)
-                  }
-                  subtitle={
-                    !props.showImageName
-                      ? undefined
-                      : props.showImageDescription && img.description
-                      ? img.description
-                      : undefined
-                  }
+                  // sx={makeStyle(props.imageDescription)}
+                  title={makeTitle(img, props)}
+                  subtitle={makeDescription(img, props)}
                 />
               )}
           </ImageListItem>
@@ -121,13 +130,7 @@ export default function GridDisplay({ props, images }: GridDisplayProps) {
             borderRadius: 4,
           }}
         >
-          <ImageCarousel
-            startIndex={open}
-            props={props.gallery}
-            images={images}
-            showImageName={props.showImageName}
-            showImageDescription={props.showImageDescription}
-          />
+          <ImageCarousel startIndex={open} props={props} images={images} />
         </Stack>
       </Modal>
     </>

@@ -1,12 +1,10 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { DisplayConfig, ImageDetail } from "../../types";
 import ReactImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import { makeDescription } from "../../functions";
-
-import ImageItem, { RenderCover } from "./imageItem";
+import ImageItem, { GalleryItem, RenderCover } from "./imageItem";
 import ToggleDescritopnButton from "./toggleDescriptionButton";
 
 interface FullHeightGalleryProps {
@@ -22,11 +20,10 @@ export default function FullHeightGallery({
   props,
   images,
 }: FullHeightGalleryProps) {
-  const [desc, setDesc] = useState(props.showImageDescription);
+  const [desc, setDesc] = useState(props.imageDescription.visibility);
   const [index, setIndex] = useState(startIndex ?? 0);
-  const ref = useRef<ReactImageGallery>(null);
 
-  const items: ReactImageGalleryItem[] = useMemo(
+  const items: GalleryItem[] = useMemo(
     () => [
       {
         original: images[0].url,
@@ -38,11 +35,10 @@ export default function FullHeightGallery({
         original: i.url,
         thumbnail: i.thumbnail,
         originalAlt: i.name,
-        description: makeDescription(
-          i,
-          props.showImageName,
-          props.showImageDescription
-        )?.join(" - "),
+        name: props.imageName.visibility ? i.name : undefined,
+        description: props.imageDescription.visibility
+          ? i.description
+          : undefined,
       })) as ReactImageGalleryItem[]),
     ],
     [images, dir, props]
@@ -58,7 +54,6 @@ export default function FullHeightGallery({
       }}
     >
       <ReactImageGallery
-        ref={ref}
         items={items}
         startIndex={index}
         infinite={propsH.infinite}
@@ -74,9 +69,15 @@ export default function FullHeightGallery({
         autoPlay={propsH.autoPlay}
         lazyLoad={true}
         renderItem={(item) => (
-          <ImageItem item={item} props={propsH} showDescription={desc} />
+          <ImageItem
+            item={item}
+            props={propsH}
+            name={props.imageName}
+            description={props.imageDescription}
+            showDescription={desc}
+          />
         )}
-        onSlide={() => setIndex(ref.current?.getCurrentIndex() ?? 0)}
+        onSlide={(i) => setIndex(i)}
       />
       {propsH.showToggleDescritopn && (
         <ToggleDescritopnButton onClick={() => setDesc((prev) => !prev)} />

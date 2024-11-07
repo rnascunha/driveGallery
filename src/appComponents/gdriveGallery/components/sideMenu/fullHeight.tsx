@@ -3,6 +3,7 @@ import {
   borderRadiusUnits,
   DisplayConfig,
   FullHeightProps,
+  heightUnits,
   objectFit,
   ObjectFit,
 } from "../../types";
@@ -10,7 +11,6 @@ import { Dispatch, SetStateAction } from "react";
 import SimpleSelect from "@/components/simpleSelect";
 import CompactCheckbox from "@/components/compactCheckbox";
 import { SwitchLabel } from "../../../../components/switch";
-import { InputHeight } from "./inputHeight";
 import InputUnit from "@/components/inputUnit";
 
 interface FullHeightMenuProps {
@@ -109,9 +109,15 @@ export default function FullHeightMenu({
               width: "11ch",
             }}
           />
-          <InputHeight
+          <InputUnit
+            label="Height"
             value={props.fullHeight.height}
-            onChange={(val: string) => updateValue("height", val)}
+            unitOptions={heightUnits}
+            onChange={(val) => updateValue("height", val)}
+            min={10}
+            sx={{
+              flex: 1
+            }}
           />
         </Stack>
         <InputUnit

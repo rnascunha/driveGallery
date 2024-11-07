@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { DisplayConfig, DisplayType, displayTypes } from "../../types";
-import { Stack, TextField } from "@mui/material";
+import { Divider, Stack, TextField } from "@mui/material";
 import SimpleSelect from "@/components/simpleSelect";
 import { debounce } from "ts-dom-libs/lib/debounce";
-import { SwitchLabel } from "../../../../components/switch";
+import InputFont from "./inputFont";
 
 interface GeneralMenuProps {
   props: DisplayConfig;
@@ -39,7 +39,7 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
             },
           }}
           sx={{
-            width: "10ch"
+            width: "10ch",
           }}
         />
         <SimpleSelect
@@ -67,25 +67,29 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
           }}
         />
       </Stack>
-      <SwitchLabel
-        label="Image name"
-        checked={props.showImageName}
-        onChange={(ev, checked) => {
+      <Divider variant="middle">Image Caption</Divider>
+      <InputFont
+        label={"Name"}
+        value={props.imageName}
+        onChange={(val) =>
           setProps((prev) => ({
             ...prev,
-            showImageName: checked,
-          }));
-        }}
+            imageName: { ...prev.imageName, ...val },
+          }))
+        }
       />
-      <SwitchLabel
-        label="Image description"
-        checked={props.showImageDescription}
-        onChange={(ev, checked) => {
+      <InputFont
+        label={"Description"}
+        value={props.imageDescription}
+        onChange={(val) =>
           setProps((prev) => ({
             ...prev,
-            showImageDescription: checked,
-          }));
-        }}
+            imageDescription: {
+              ...prev.imageDescription,
+              ...val,
+            },
+          }))
+        }
       />
     </Stack>
   );

@@ -7,12 +7,5 @@ interface GalleryDisplayProps {
 }
 
 export default function GalleryDisplay({ images, props }: GalleryDisplayProps) {
-  return (
-    <ImageCarousel
-      props={props.gallery}
-      images={images}
-      showImageName={props.showImageName}
-      showImageDescription={props.showImageDescription}
-    />
-  );
+  return <ImageCarousel props={props} images={images} />;
 }

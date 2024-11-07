@@ -1,9 +1,9 @@
 import { DisplayConfig } from "../../types";
 import { Stack, Typography } from "@mui/material";
-import { FontType, getFont } from "../fonts";
 import Image from "next/image";
 import { SkeletonTitle } from "../skeleton";
-import { driveImageURL } from "@/lib/google/driveUtils";
+import { driveImageThumbnailURL } from "@/lib/google/driveUtils";
+import { makeStyle } from "../../functions";
 
 function Logo({ props }: { props: DisplayConfig }) {
   return (
@@ -17,8 +17,10 @@ function Logo({ props }: { props: DisplayConfig }) {
       >
         <Image
           alt={props.logo}
-          src={driveImageURL(props.logo)}
+          src={driveImageThumbnailURL(props.logo, 200)}
           fill
+          sizes="200w"
+          priority
           style={{
             objectFit: "contain",
           }}
@@ -41,25 +43,25 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
       <Logo props={props} />
       {dir ? (
         <>
-          {dir.name && props.showTitle && (
+          {dir.name && props.title.visibility && (
             <Typography
               variant="h2"
               component="h2"
               sx={{
                 textAlign: "center",
-                fontFamily: getFont(props.fontFamily as FontType),
-                whiteSpace: "break-spaces"
+                whiteSpace: "break-spaces",
+                ...makeStyle(props.title),
               }}
             >
               {dir.name}
             </Typography>
           )}
-          {dir.description && props.showDescription && (
+          {dir.description && props.description.visibility && (
             <Typography
               sx={{
                 textAlign: "center",
-                fontFamily: getFont(props.fontFamily as FontType),
-                whiteSpace: "break-spaces"
+                whiteSpace: "break-spaces",
+                ...makeStyle(props.description),
               }}
             >
               {dir.description}

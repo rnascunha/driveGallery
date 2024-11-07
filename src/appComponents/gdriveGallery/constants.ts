@@ -4,6 +4,8 @@ import {
   GalleryProps,
   GridProps,
 } from "./types";
+import { defaultFontConfig } from "@/components/text/constants";
+import { TextConfig } from "./components/sideMenu/inputFont";
 
 export const discoveryDocs = [
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
@@ -39,39 +41,64 @@ export const defaultGalleryProps: GalleryProps = {
   slideDuration: 450,
   slideInterval: 3000,
   objectFit: "contain",
-  height: "50vh",
+  height: {
+    value: 50,
+    unit: "dvh",
+  },
 };
 
 export const defaultFullHeightProps: FullHeightProps = {
   showPlay: false,
   showBullets: true,
   infinite: true,
-  showFullscreenButton: true,
-  showToggleDescritopn: false,
+  showFullscreenButton: false,
+  showToggleDescritopn: true,
   showNav: true,
   showIndex: true,
   autoPlay: false,
   slideDuration: 450,
   slideInterval: 3000,
   objectFit: "cover",
-  height: "100vh",
+  height: {
+    value: 100,
+    unit: "dvh",
+  },
   borderRadius: {
     value: 0,
-    unit: "px"
-  }
+    unit: "px",
+  },
+};
+
+const defaultTextConfig: TextConfig = {
+  visibility: true,
+  ...defaultFontConfig,
 };
 
 export const defaultDisplayProps: DisplayConfig = {
   type: "grid",
   maxWidth: 1000,
-  color: "#000000",
   backgroundColor: "#ffffff",
   logo: "",
-  fontFamily: "Roboto",
-  showTitle: true,
-  showDescription: true,
-  showImageName: true,
-  showImageDescription: true,
+  title: {
+    ...defaultTextConfig,
+    fontSize: 50,
+    fontWeight: "bold",
+  },
+  description: {
+    ...defaultTextConfig,
+    fontSize: 18,
+  },
+  imageName: {
+    ...defaultTextConfig,
+    color: "#ffffff",
+    fontWeight: "bold",
+  },
+  imageDescription: {
+    ...defaultTextConfig,
+    ...defaultTextConfig,
+    color: "#ffffff",
+    fontSize: 14,
+  },
   grid: defaultGridProps,
   gallery: defaultGalleryProps,
   fullHeight: defaultFullHeightProps,

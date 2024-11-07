@@ -4,7 +4,6 @@ import GalleryDisplay from "./galleryDisplay";
 import GridDisplay from "./gridDisplay";
 import CenterContainer from "@/components/centerContainer";
 import TitleHeader from "./titleHeader";
-import { FontType, getFont } from "../fonts";
 import FullHeightDisplay from "./fullHeightDisplay";
 import { Box, Stack } from "@mui/material";
 
@@ -24,8 +23,6 @@ export default function DisplayImage({
       <Box
         sx={{
           animation: "fadeIn ease 3s",
-          fontFamily: getFont(props.fontFamily as FontType),
-          color: props.color,
           backgroundColor: props.backgroundColor,
           width: "100wh",
           height: "100vh",
@@ -54,8 +51,6 @@ export default function DisplayImage({
   return (
     <ScrollContainer
       sx={{
-        fontFamily: getFont(props.fontFamily as FontType),
-        color: props.color,
         backgroundColor: props.backgroundColor,
         animation: "fadeIn ease 3s",
       }}

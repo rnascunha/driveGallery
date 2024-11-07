@@ -1,5 +1,6 @@
 import { ValueUnit } from "@/components/inputUnit";
 import { AlertColor } from "@mui/material";
+import { TextConfig } from "./components/sideMenu/inputFont";
 
 export interface Status {
   severity: AlertColor;
@@ -33,6 +34,9 @@ export type ThumbnailsPosition = (typeof thumbnailsPositions)[number];
 export const borderRadiusUnits = ["px", "%"] as const;
 export type BorderRadiusUnit = (typeof borderRadiusUnits)[number];
 
+export const heightUnits = ["dvh", "px"] as const;
+export type HieghtUnit = (typeof heightUnits)[number];
+
 export interface GridProps {
   objectFit: ObjectFit;
   borderRadius: number;
@@ -58,7 +62,7 @@ export interface GalleryProps {
   slideDuration: number;
   slideInterval: number;
   objectFit: ObjectFit;
-  height: `${number}${"px" | "vh"}`;
+  height: ValueUnit<HieghtUnit>;
 }
 
 export interface FullHeightProps {
@@ -73,7 +77,7 @@ export interface FullHeightProps {
   slideDuration: number;
   slideInterval: number;
   objectFit: ObjectFit;
-  height: `${number}${"px" | "vh"}`;
+  height: ValueUnit<HieghtUnit>;
   borderRadius: ValueUnit<BorderRadiusUnit>;
 }
 
@@ -81,13 +85,11 @@ export interface DisplayConfig {
   type: DisplayType;
   backgroundColor: string;
   logo: string;
-  color: string;
-  fontFamily: string;
   maxWidth: number;
-  showTitle: boolean;
-  showDescription: boolean;
-  showImageName: boolean;
-  showImageDescription: boolean;
+  title: TextConfig;
+  description: TextConfig;
+  imageName: TextConfig;
+  imageDescription: TextConfig;
   grid: GridProps;
   gallery: GalleryProps;
   fullHeight: FullHeightProps;

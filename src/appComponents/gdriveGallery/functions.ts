@@ -1,10 +1,11 @@
 import { createFile, updateFileContent } from "@/lib/google/drive";
-import { DisplayConfig, ImageDetail } from "./types";
+import { DisplayConfig } from "./types";
 import {
   isDriveFolder,
   isDriveId,
   urlFolderToId,
 } from "@/lib/google/driveUtils";
+import { TextConfig } from "./components/sideMenu/inputFont";
 
 const base = `${process.env.NEXT_PUBLIC_gallery_address}`;
 
@@ -37,6 +38,12 @@ export function mergeProps(
       ...primary.fullHeight,
     },
   };
+}
+
+export function makeStyle(props: TextConfig): Omit<Partial<TextConfig>, "visibility"> {
+  const a:Partial<TextConfig> = Object.assign({}, props);
+  delete a.visibility;
+  return a;
 }
 
 async function driveFollowLink(file: gapi.client.drive.File) {
@@ -104,6 +111,7 @@ export async function listFiles(id: string) {
       fields: "files(id, name, description)",
       q: `('${id}' in parents) and trashed = false and (mimeType contains 'image/')`,
       spaces: "drive",
+      orderBy: "name_natural"
     })
     .then((res) => {
       gapi.client.setToken(token);
@@ -203,15 +211,3 @@ export async function searchByFolderId(id: string) {
   return { error: {}, message: `Not a valid ID` };
 }
 
-export function makeDescription(
-  image: ImageDetail,
-  showImageName: boolean,
-  showImageDescription: boolean
-) {
-  const ret = [];
-  if (image.name && showImageName)
-    ret.push(removeFileNameExtension(image.name));
-  if (image.description && showImageDescription) ret.push(image.description);
-  if (ret.length === 0) return undefined;
-  return ret;
-}
