@@ -48,6 +48,7 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
               sx={{
                 textAlign: "center",
                 fontFamily: getFont(props.fontFamily as FontType),
+                whiteSpace: "break-spaces"
               }}
             >
               {dir.name}
@@ -58,6 +59,7 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
               sx={{
                 textAlign: "center",
                 fontFamily: getFont(props.fontFamily as FontType),
+                whiteSpace: "break-spaces"
               }}
             >
               {dir.description}
