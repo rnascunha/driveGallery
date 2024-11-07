@@ -46,7 +46,7 @@ export default function DisplayImageContainer({
         url: driveImageURL(img.id as string),
         thumbnail: driveImageThumbnailURL(img.id as string, 100),
         description: img.description,
-      })) ?? []
+      }))
     );
   }, [imagesFile]);
 

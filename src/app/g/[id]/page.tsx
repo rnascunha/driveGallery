@@ -34,7 +34,6 @@ async function getFolder(id: string) {
 
 async function getData(id: string, props: DisplayConfig) {
   return Promise.all([getFolder(id), getConfigFile(id)]).then(([f, c]) => {
-    console.log(f, c);
     return [
       "error" in f ? null : f,
       c !== undefined ? mergeProps(c[1], props) : props,
