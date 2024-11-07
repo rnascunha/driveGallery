@@ -1,5 +1,4 @@
 import {
-  Button,
   Stack,
   TextField,
   ToggleButton,
@@ -10,17 +9,16 @@ import { MouseEvent, useMemo } from "react";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
-import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
+
 import { debounce } from "ts-dom-libs/lib/debounce";
 import SimpleSelect from "../simpleSelect";
 import { fontFamilyArray } from "./constants";
 import { FontConfig } from "./types";
+import ColorButton from "./colorButton";
 
 interface TextFormatProps {
   format: FontConfig;
-  onChange: (
-    val: Partial<FontConfig>
-  ) => void;
+  onChange: (val: Partial<FontConfig>) => void;
 }
 
 export default function TextFormat({ format, onChange }: TextFormatProps) {
@@ -79,40 +77,7 @@ export default function TextFormat({ format, onChange }: TextFormatProps) {
           <FormatUnderlinedIcon />
         </ToggleButton>
       </ToggleButtonGroup>
-      <Button
-        value="color"
-        aria-label="color"
-        sx={{
-          p: 0,
-          minWidth: 0,
-          border: "1px solid rgba(0, 0, 0, 0.2)",
-        }}
-      >
-        <label
-          style={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <FormatColorFillIcon
-            sx={{
-              color: format.color,
-              width: "40px",
-            }}
-          />
-          <input
-            type="color"
-            style={{
-              width: 0,
-              height: 0,
-              border: "none",
-            }}
-            value={format.color}
-            onChange={(ev) => updateColor(ev.target.value)}
-          />
-        </label>
-      </Button>
+      <ColorButton value={format.color} onChange={(val) => updateColor(val)} />
       <TextField
         size="small"
         type="number"
