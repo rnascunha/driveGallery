@@ -112,7 +112,7 @@ export default function GalleryMenu({ props, setProps }: GalleryMenuProps) {
             }
             options={objectFit}
             sx={{
-              width: "11ch",
+              width: "15ch",
             }}
           />
           <InputUnit
