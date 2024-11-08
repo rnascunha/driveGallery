@@ -1,4 +1,4 @@
-import { Button, ButtonProps, SxProps } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import { forwardRef, ReactNode } from "react";
 
@@ -6,7 +6,6 @@ interface ColorButtonProps extends Omit<ButtonProps, "onChange"> {
   value: string;
   onChange: (color: string) => void;
   icon?: ReactNode;
-  // sx?: SxProps;
 }
 
 const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps>(
