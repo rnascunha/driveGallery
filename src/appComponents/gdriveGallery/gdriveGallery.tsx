@@ -82,6 +82,7 @@ export default function GDriveGallery({
 
   useEffect(() => {
     if (!dir?.id || !state.api) return;
+    configId.current = undefined;
     getConfigFile(dir.id)
       .then((p) => {
         if (p) {

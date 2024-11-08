@@ -67,6 +67,7 @@ export default function ImageCarousel({
             name={props.imageName}
             description={props.imageDescription}
             showDescription={desc}
+            defaultFontFamily={props.defaultFontFamilty}
           />
         )}
         renderThumbInner={(i) => <ImageThumnail item={i} />}

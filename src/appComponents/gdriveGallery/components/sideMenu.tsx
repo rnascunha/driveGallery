@@ -6,7 +6,6 @@ import GalleryMenu from "./sideMenu/gallery";
 import { ArrayPanel, PanelConfig } from "@/components/panels";
 
 import GeneralMenu from "./sideMenu/general";
-import HeaderMenu from "./sideMenu/header";
 
 // import SearchFolder from "./sideMenu/searchFolder";
 import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
@@ -15,7 +14,6 @@ import InputId from "./sideMenu/inputId";
 import WebAssetIcon from "@mui/icons-material/WebAsset";
 import AppsIcon from "@mui/icons-material/Apps";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
-import TitleIcon from "@mui/icons-material/Title";
 import HeightIcon from "@mui/icons-material/Height";
 import FullHeightMenu from "./sideMenu/fullHeight";
 
@@ -42,14 +40,6 @@ SideMenuProps) {
         </Tooltip>
       ),
       panel: <GeneralMenu props={props} setProps={setProps} />,
-    },
-    {
-      label: (
-        <Tooltip title="Header">
-          <TitleIcon />
-        </Tooltip>
-      ),
-      panel: <HeaderMenu props={props} setProps={setProps} />,
     },
     {
       label: (

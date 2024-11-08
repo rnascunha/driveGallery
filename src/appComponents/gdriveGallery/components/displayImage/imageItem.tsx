@@ -25,6 +25,7 @@ interface ImageDescriptionProps {
   name: TextConfig;
   description: TextConfig;
   showDescription: boolean;
+  defaultFontFamily: string;
 }
 
 function ImageDescription({
@@ -32,6 +33,7 @@ function ImageDescription({
   name,
   description,
   showDescription,
+  defaultFontFamily,
 }: ImageDescriptionProps) {
   if ((!item.description && !item.name) || !showDescription) return;
   return (
@@ -45,12 +47,14 @@ function ImageDescription({
       gap={1}
     >
       {item.name && (
-        <Typography sx={makeStyle(name)}>
+        <Typography sx={makeStyle(name, defaultFontFamily)}>
           {removeFileNameExtension(item.name)}
         </Typography>
       )}
       {item.description && (
-        <Typography sx={makeStyle(description)}>{item.description}</Typography>
+        <Typography sx={makeStyle(description, defaultFontFamily)}>
+          {item.description}
+        </Typography>
       )}
     </Stack>
   );
@@ -62,6 +66,7 @@ interface ImageItemProps {
   name: TextConfig;
   description: TextConfig;
   showDescription: boolean;
+  defaultFontFamily: string;
 }
 
 export default function ImageItem({
@@ -70,6 +75,7 @@ export default function ImageItem({
   name,
   description,
   showDescription,
+  defaultFontFamily,
 }: ImageItemProps) {
   return (
     <div
@@ -105,6 +111,7 @@ export default function ImageItem({
         name={name}
         description={description}
         showDescription={showDescription}
+        defaultFontFamily={defaultFontFamily}
       />
     </div>
   );

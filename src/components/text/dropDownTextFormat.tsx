@@ -4,17 +4,18 @@ import { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TextFormat from "./textFormat";
 import { FontConfig } from "./types";
+import { MenuValue } from "../simpleSelect";
 
 interface DrowdownTextFormatProps {
   format: FontConfig;
-  onChange: (
-    val: Partial<FontConfig>
-  ) => void;
+  onChange: (val: Partial<FontConfig>) => void;
+  fonts: readonly (string | MenuValue<string>)[];
 }
 
 export default function DrowdownTextFormat({
   format,
   onChange,
+  fonts,
 }: DrowdownTextFormatProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -54,7 +55,7 @@ export default function DrowdownTextFormat({
           },
         }}
       >
-        <TextFormat format={format} onChange={onChange} />
+        <TextFormat format={format} onChange={onChange} fonts={fonts} />
       </Menu>
     </>
   );

@@ -50,7 +50,7 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
               sx={{
                 textAlign: "center",
                 whiteSpace: "break-spaces",
-                ...makeStyle(props.title),
+                ...makeStyle(props.title, props.defaultFontFamilty),
               }}
             >
               {dir.name}
@@ -61,7 +61,7 @@ export default function TitleHeader({ dir, props }: TitleHeaderProps) {
               sx={{
                 textAlign: "center",
                 whiteSpace: "break-spaces",
-                ...makeStyle(props.description),
+                ...makeStyle(props.description, props.defaultFontFamilty),
               }}
             >
               {dir.description}

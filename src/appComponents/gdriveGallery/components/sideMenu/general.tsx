@@ -6,6 +6,8 @@ import { debounce } from "ts-dom-libs/lib/debounce";
 import InputFont from "./inputFont";
 import ColorButton from "@/components/text/colorButton";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
+import HeaderMenu from "./header";
+import { fontListOptions, fontsList } from "../../constants";
 
 interface GeneralMenuProps {
   props: DisplayConfig;
@@ -73,6 +75,23 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
           />
         </Tooltip>
       </Stack>
+      <SimpleSelect
+        label="Default font"
+        options={fontsList}
+        value={props.defaultFontFamilty}
+        sx={{
+          flex: 1,
+          mt: 1,
+        }}
+        onChange={(ev) =>
+          setProps((prev) => ({
+            ...prev,
+            defaultFontFamilty: ev.target.value,
+          }))
+        }
+      />
+      <Divider variant="middle">Header</Divider>
+      <HeaderMenu props={props} setProps={setProps} />
       <Divider variant="middle">Image Caption</Divider>
       <InputFont
         label={"Name"}
@@ -83,6 +102,7 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
             imageName: { ...prev.imageName, ...val },
           }))
         }
+        fonts={fontListOptions}
       />
       <InputFont
         label={"Description"}
@@ -96,6 +116,7 @@ export default function GeneralMenu({ props, setProps }: GeneralMenuProps) {
             },
           }))
         }
+        fonts={fontListOptions}
       />
     </Stack>
   );

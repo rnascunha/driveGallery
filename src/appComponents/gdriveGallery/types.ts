@@ -79,6 +79,7 @@ export interface FullHeightProps {
   objectFit: ObjectFit;
   height: ValueUnit<HieghtUnit>;
   borderRadius: ValueUnit<BorderRadiusUnit>;
+  backgroundImage: boolean;
 }
 
 export interface DisplayConfig {
@@ -86,6 +87,7 @@ export interface DisplayConfig {
   backgroundColor: string;
   logo: string;
   maxWidth: number;
+  defaultFontFamilty: string;
   title: TextConfig;
   description: TextConfig;
   imageName: TextConfig;

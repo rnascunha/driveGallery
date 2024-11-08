@@ -69,6 +69,11 @@ export default function FullHeightMenu({
         checked={props.fullHeight.showToggleDescritopn}
         onChange={(ev, ck) => updateValue("showToggleDescritopn", ck)}
       />
+      <SwitchLabel
+        label="Image background"
+        checked={props.fullHeight.backgroundImage}
+        onChange={(ev, ck) => updateValue("backgroundImage", ck)}
+      />
       <Stack gap={1}>
         <Stack direction="row" gap={0.5}>
           <CompactCheckbox

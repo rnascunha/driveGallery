@@ -7,7 +7,7 @@ import {
   SxProps,
 } from "@mui/material";
 
-interface MenuValue<T extends string | number> {
+export interface MenuValue<T extends string | number> {
   value: T;
   label: T;
 }

@@ -3,6 +3,7 @@ import { DisplayConfig } from "../../types";
 import { Stack, TextField } from "@mui/material";
 import { urlToId } from "@/lib/google/driveUtils";
 import InputFont from "./inputFont";
+import { fontListOptions } from "../../constants";
 
 interface HeaderMenuProps {
   props: DisplayConfig;
@@ -33,6 +34,7 @@ export default function HeaderMenu({ props, setProps }: HeaderMenuProps) {
               title: { ...prev.title, ...val },
             }))
           }
+          fonts={fontListOptions}
         />
         <InputFont
           label={"Description"}
@@ -43,6 +45,7 @@ export default function HeaderMenu({ props, setProps }: HeaderMenuProps) {
               description: { ...prev.description, ...val },
             }))
           }
+          fonts={fontListOptions}
         />
       </Stack>
     </>

@@ -1,49 +1,26 @@
-import { useMemo, useState } from "react";
-import { DisplayConfig, ImageDetail } from "../../types";
-import ReactImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
+import { Dispatch, SetStateAction, useState } from "react";
+import { DisplayConfig } from "../../types";
+import ReactImageGallery from "react-image-gallery";
 
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import ImageItem, { GalleryItem, RenderCover } from "./imageItem";
+import ImageItem, { GalleryItem } from "./imageItem";
 import ToggleDescritopnButton from "./toggleDescriptionButton";
 
 interface FullHeightGalleryProps {
-  dir: gapi.client.drive.File;
-  startIndex?: number;
+  images: GalleryItem[];
   props: DisplayConfig;
-  images: ImageDetail[];
+  index: number;
+  setIndex: Dispatch<SetStateAction<number>>;
 }
 
 export default function FullHeightGallery({
-  startIndex,
-  dir,
-  props,
   images,
+  props,
+  index,
+  setIndex,
 }: FullHeightGalleryProps) {
   const [desc, setDesc] = useState(props.imageDescription.visibility);
-  const [index, setIndex] = useState(startIndex ?? 0);
-
-  const items: GalleryItem[] = useMemo(
-    () => [
-      {
-        original: images[0].url,
-        renderItem: () => (
-          <RenderCover image={images[0]} dir={dir} props={props} />
-        ),
-      },
-      ...(images.map((i) => ({
-        original: i.url,
-        thumbnail: i.thumbnail,
-        originalAlt: i.name,
-        name: props.imageName.visibility ? i.name : undefined,
-        description: props.imageDescription.visibility
-          ? i.description
-          : undefined,
-      })) as ReactImageGalleryItem[]),
-    ],
-    [images, dir, props]
-  );
-
   const propsH = props.fullHeight;
 
   return (
@@ -54,7 +31,7 @@ export default function FullHeightGallery({
       }}
     >
       <ReactImageGallery
-        items={items}
+        items={images}
         startIndex={index}
         infinite={propsH.infinite}
         showPlayButton={propsH.showPlay}
@@ -75,12 +52,16 @@ export default function FullHeightGallery({
             name={props.imageName}
             description={props.imageDescription}
             showDescription={desc}
+            defaultFontFamily={props.defaultFontFamilty}
           />
         )}
         onSlide={(i) => setIndex(i)}
       />
       {propsH.showToggleDescritopn && (
-        <ToggleDescritopnButton show={desc} onClick={() => setDesc((prev) => !prev)} />
+        <ToggleDescritopnButton
+          show={desc}
+          onClick={() => setDesc((prev) => !prev)}
+        />
       )}
     </div>
   );

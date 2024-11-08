@@ -4,7 +4,7 @@ import {
   GalleryProps,
   GridProps,
 } from "./types";
-import { defaultFontConfig } from "@/components/text/constants";
+import { defaultFontConfig, fontFamilyArray } from "@/components/text/constants";
 import { TextConfig } from "./components/sideMenu/inputFont";
 
 export const discoveryDocs = [
@@ -15,6 +15,12 @@ export const scopes = [
   "https://www.googleapis.com/auth/drive.file",
   // "https://www.googleapis.com/auth/drive",
 ];
+
+export const fontsList = fontFamilyArray;
+export const fontListOptions = [
+  "default",
+  ...fontFamilyArray
+]
 
 const defaultGridProps: GridProps = {
   variant: "standard",
@@ -67,11 +73,13 @@ export const defaultFullHeightProps: FullHeightProps = {
     value: 0,
     unit: "px",
   },
+  backgroundImage: false,
 };
 
 const defaultTextConfig: TextConfig = {
   visibility: true,
   ...defaultFontConfig,
+  fontFamily: "default"
 };
 
 export const defaultDisplayProps: DisplayConfig = {
@@ -79,6 +87,7 @@ export const defaultDisplayProps: DisplayConfig = {
   maxWidth: 1000,
   backgroundColor: "#ffffff",
   logo: "",
+  defaultFontFamilty: "Monospace",
   title: {
     ...defaultTextConfig,
     fontSize: 50,

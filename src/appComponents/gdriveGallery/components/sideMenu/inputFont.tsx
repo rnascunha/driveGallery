@@ -1,3 +1,4 @@
+import { MenuValue } from "@/components/simpleSelect";
 import DrowdownTextFormat from "@/components/text/dropDownTextFormat";
 import { FontConfig } from "@/components/text/types";
 import { Stack, Switch, SxProps, Typography } from "@mui/material";
@@ -13,6 +14,7 @@ interface InputFontProps {
     val: Partial<TextConfig>
   ) => void;
   sx?: SxProps;
+  fonts: readonly (string | MenuValue<string>)[];
 }
 
 export default function InputFont({
@@ -20,6 +22,7 @@ export default function InputFont({
   value,
   onChange,
   sx,
+  fonts
 }: InputFontProps) {
   return (
     <Stack
@@ -30,7 +33,7 @@ export default function InputFont({
     >
       <Typography>{label}</Typography>
       <Stack direction="row">
-        <DrowdownTextFormat format={value} onChange={onChange} />
+        <DrowdownTextFormat format={value} onChange={onChange} fonts={fonts} />
         <Switch
           color="primary"
           checked={value.visibility}

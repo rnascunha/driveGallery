@@ -16,11 +16,11 @@ import { makeStyle, removeFileNameExtension } from "../../functions";
 
 function makeTitle(img: ImageDetail, props: DisplayConfig) {
   return props.imageName ? (
-    <Typography sx={makeStyle(props.imageName)}>
+    <Typography sx={makeStyle(props.imageName, props.defaultFontFamilty)}>
       {removeFileNameExtension(img.name as string)}
     </Typography>
   ) : (
-    <Typography sx={makeStyle(props.imageDescription)}>
+    <Typography sx={makeStyle(props.imageDescription, props.defaultFontFamilty)}>
       {img.description as string}
     </Typography>
   );
@@ -29,7 +29,7 @@ function makeTitle(img: ImageDetail, props: DisplayConfig) {
 function makeDescription(img: ImageDetail, props: DisplayConfig) {
   return !props.imageName ? undefined : props.imageDescription &&
     img.description ? (
-    <Typography sx={makeStyle(props.imageDescription)}>
+    <Typography sx={makeStyle(props.imageDescription, props.defaultFontFamilty)}>
       {img.description}
     </Typography>
   ) : undefined;

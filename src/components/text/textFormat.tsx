@@ -11,17 +11,17 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
 
 import { debounce } from "ts-dom-libs/lib/debounce";
-import SimpleSelect from "../simpleSelect";
-import { fontFamilyArray } from "./constants";
+import SimpleSelect, { MenuValue } from "../simpleSelect";
 import { FontConfig } from "./types";
 import ColorButton from "./colorButton";
 
 interface TextFormatProps {
   format: FontConfig;
   onChange: (val: Partial<FontConfig>) => void;
+  fonts: readonly (string | MenuValue<string>)[]
 }
 
-export default function TextFormat({ format, onChange }: TextFormatProps) {
+export default function TextFormat({ format, onChange, fonts }: TextFormatProps) {
   const updateColor = useMemo(
     () => debounce((color: string) => onChange({ color: color }), 400),
     [onChange]
@@ -50,7 +50,7 @@ export default function TextFormat({ format, onChange }: TextFormatProps) {
     <Stack direction="row" gap={0.2}>
       <SimpleSelect
         label="Font Family"
-        options={fontFamilyArray}
+        options={fonts}
         value={format.fontFamily}
         onChange={(ev) =>
           onChange({

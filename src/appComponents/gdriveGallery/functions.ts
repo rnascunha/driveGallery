@@ -40,9 +40,10 @@ export function mergeProps(
   };
 }
 
-export function makeStyle(props: TextConfig): Omit<Partial<TextConfig>, "visibility"> {
+export function makeStyle(props: TextConfig, defaultFontFamilty: string): Omit<Partial<TextConfig>, "visibility"> {
   const a:Partial<TextConfig> = Object.assign({}, props);
   delete a.visibility;
+  a.fontFamily = a.fontFamily === "default" ? defaultFontFamilty : a.fontFamily;
   return a;
 }
 
