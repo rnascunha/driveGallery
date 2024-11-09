@@ -25,6 +25,7 @@ export default function BackgroundImageTransition({
             height: "100vh",
             backgroundSize: "cover",
             backgroundImage: `url(${img.original})`,
+            backgroundPosition: "50% 50%",
             transition: `opacity ${transition}ms ease-in-out`,
             filter: "blur(8px)",
             opacity: index === i ? 1 : 0,
