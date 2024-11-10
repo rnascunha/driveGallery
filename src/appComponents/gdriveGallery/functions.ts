@@ -40,8 +40,11 @@ export function mergeProps(
   };
 }
 
-export function makeStyle(props: TextConfig, defaultFontFamilty: string): Omit<Partial<TextConfig>, "visibility"> {
-  const a:Partial<TextConfig> = Object.assign({}, props);
+export function makeStyle(
+  props: TextConfig,
+  defaultFontFamilty: string
+): Omit<Partial<TextConfig>, "visibility"> {
+  const a: Partial<TextConfig> = Object.assign({}, props);
   delete a.visibility;
   a.fontFamily = a.fontFamily === "default" ? defaultFontFamilty : a.fontFamily;
   return a;
@@ -104,20 +107,20 @@ export async function uploadConfig(
 }
 
 export async function listFiles(id: string) {
-  const token = gapi.client.getToken();
-  gapi.client.setToken(null);
   return gapi.client.drive.files
     .list({
       pageSize: 100,
       fields: "files(id, name, description)",
       q: `('${id}' in parents) and trashed = false and (mimeType contains 'image/')`,
       spaces: "drive",
-      orderBy: "name_natural"
+      orderBy: "name_natural",
     })
     .then((res) => {
-      gapi.client.setToken(token);
       return res;
     })
+    .catch((e) => {
+      console.log("e1", e);
+    });
 }
 
 export function isLink(url: string) {
@@ -211,4 +214,3 @@ export async function searchByFolderId(id: string) {
   if (ret) return ret;
   return { error: {}, message: `Not a valid ID` };
 }
-

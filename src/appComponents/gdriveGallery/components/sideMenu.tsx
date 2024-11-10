@@ -1,28 +1,33 @@
-import { Stack, Tooltip } from "@mui/material";
-import { DisplayConfig } from "../types";
-import { Dispatch, SetStateAction } from "react";
-import GridMenu from "./sideMenu/grid";
-import GalleryMenu from "./sideMenu/gallery";
-import { ArrayPanel, PanelConfig } from "@/components/panels";
-
-import GeneralMenu from "./sideMenu/general";
+import { Divider, Drawer, Stack } from "@mui/material";
+import { DisplayConfig, Status } from "../types";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 // import SearchFolder from "./sideMenu/searchFolder";
 import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
 import InputId from "./sideMenu/inputId";
 
-import WebAssetIcon from "@mui/icons-material/WebAsset";
-import AppsIcon from "@mui/icons-material/Apps";
-import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
-import HeightIcon from "@mui/icons-material/Height";
-import FullHeightMenu from "./sideMenu/fullHeight";
+import FileManagement from "./sideMenu/fileManagementMenu";
+import ConfigMenu from "./sideMenu/configMenu";
+import TopMenu from "./sideMenu/topMenu";
+
+const width = 300;
 
 interface SideMenuProps {
   dir: gapi.client.drive.File | null;
   setDir: Dispatch<SetStateAction<gapi.client.drive.File | null>>;
   props: DisplayConfig;
   setProps: Dispatch<SetStateAction<DisplayConfig>>;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
   state: GoogleAPIState;
+  setState: Dispatch<SetStateAction<GoogleAPIState>>;
+  token: MutableRefObject<google.accounts.oauth2.TokenClient | null>;
+  configId: MutableRefObject<string | undefined>;
+  setStatus: Dispatch<SetStateAction<Status | null>>;
+  images: gapi.client.drive.File[] | undefined;
+  setImages: Dispatch<SetStateAction<gapi.client.drive.File[] | undefined>>;
+  setForce: Dispatch<SetStateAction<boolean>>;
+  error: string | null;
 }
 
 export default function SideMenu({
@@ -30,70 +35,58 @@ export default function SideMenu({
   setDir,
   props,
   setProps,
-}: // state,
-SideMenuProps) {
-  const panels: PanelConfig[] = [
-    {
-      label: (
-        <Tooltip title="General">
-          <WebAssetIcon />
-        </Tooltip>
-      ),
-      panel: <GeneralMenu props={props} setProps={setProps} />,
-    },
-    {
-      label: (
-        <Tooltip title="Grid">
-          <AppsIcon />
-        </Tooltip>
-      ),
-      panel: <GridMenu props={props} setProps={setProps} />,
-    },
-    {
-      label: (
-        <Tooltip title="Gallery">
-          <ViewCarouselIcon />
-        </Tooltip>
-      ),
-      panel: <GalleryMenu props={props} setProps={setProps} />,
-    },
-    {
-      label: (
-        <Tooltip title="Full Height">
-          <HeightIcon />
-        </Tooltip>
-      ),
-      panel: <FullHeightMenu props={props} setProps={setProps} />,
-    },
-  ];
-
+  open,
+  setOpen,
+  state,
+  setState,
+  token,
+  configId,
+  setStatus,
+  images,
+  setImages,
+  setForce,
+  error,
+}: SideMenuProps) {
   return (
-    <Stack
-      sx={{
-        flex: 1,
-        p: 0.5,
-        mt: 0.25,
-      }}
-      gap={1}
-    >
-      <InputId dir={dir} setDir={setDir} />
-      {/* {state.signed ? (
+    <Drawer variant="persistent" open={open}>
+      <Stack
+        sx={{
+          width,
+          bgcolor: "rgb(245, 245, 245)",
+          height: "100%",
+          px: 0.5,
+        }}
+      >
+        <TopMenu
+          dir={dir}
+          props={props}
+          setOpen={setOpen}
+          setProps={setProps}
+          state={state}
+          setState={setState}
+          token={token.current}
+          onSignOut={() => setState((prev) => ({ ...prev, signed: false }))}
+          setStatus={setStatus}
+          configId={configId}
+        />
+        <Divider />
+        <FileManagement
+          dir={dir}
+          setDir={setDir}
+          state={state}
+          images={images}
+          setImages={setImages}
+          setForce={setForce}
+          error={error}
+        />
+        <InputId dir={dir} setDir={setDir} />
+        {/* {state.signed ? (
         <SearchFolder dir={dir} setDir={setDir} />
       ) : (
         <InputId dir={dir} setDir={setDir} />
       )} */}
-      <ArrayPanel
-        panels={panels}
-        sxHeader={{
-          "& .MuiButtonBase-root": {
-            minWidth: "unset",
-            flex: 1,
-          },
-          "& .MuiTabs-flexContainer": {
-            justifyContent: "space-between",
-          },
-        }}
-      />
-    </Stack>
+        <ConfigMenu props={props} setProps={setProps} />
+      </Stack>
+    </Drawer>
   );
 }

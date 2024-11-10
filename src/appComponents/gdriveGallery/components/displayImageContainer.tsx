@@ -1,14 +1,12 @@
 "use client";
 
 import { DisplayConfig } from "../types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+
+import { listFiles } from "../functions";
+import DisplayImageShow from "./displayImage/displayImageShow";
 
 import "react-image-gallery/styles/css/image-gallery.css";
-import { ImageListError, ImageListIdDefined } from "./ImageListStatus";
-import { SkeletonDriveGallery } from "./skeleton";
-import { listFiles } from "../functions";
-import DisplayImage from "./displayImage/displayImage";
-import { driveImageThumbnailURL, driveImageURL } from "@/lib/google/driveUtils";
 
 interface DisplayImageContainerProps {
   dir: gapi.client.drive.File | null;
@@ -30,6 +28,7 @@ export default function DisplayImageContainer({
 
     listFiles(dir.id as string)
       .then((f) => {
+        if (!f) return;
         setImagesFiles(f.result.files as gapi.client.drive.File[]);
       })
       .catch((e) => {
@@ -38,22 +37,12 @@ export default function DisplayImageContainer({
       });
   }, [dir]);
 
-  const images = useMemo(() => {
-    return imagesFile?.map((img) => ({
-      id: img.id as string,
-      name: img.name as string,
-      url:
-        props.maxWidth === 0
-          ? driveImageURL(img.id as string)
-          : driveImageThumbnailURL(img.id as string, props.maxWidth),
-      thumbnail: driveImageThumbnailURL(img.id as string, 100),
-      description: img.description,
-    }));
-  }, [imagesFile, props.maxWidth]);
-
-  if (error !== null) return <ImageListError error={error} />;
-  if (!dir) return <ImageListIdDefined />;
-  if (images === undefined) return <SkeletonDriveGallery props={props} />;
-
-  return <DisplayImage dir={dir} images={images} props={props} />;
+  return (
+    <DisplayImageShow
+      dir={dir}
+      images={imagesFile}
+      props={props}
+      error={error}
+    />
+  );
 }

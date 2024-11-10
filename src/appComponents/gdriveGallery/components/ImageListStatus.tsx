@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import WarningIcon from "@mui/icons-material/Warning";
 
 function StatusDisplay({ icon, info }: { icon?: ReactNode; info?: ReactNode }) {
   return (
@@ -19,13 +20,19 @@ function StatusDisplay({ icon, info }: { icon?: ReactNode; info?: ReactNode }) {
   );
 }
 
-export function ImageListError({ error }: { error: string }) {
+export function ImageListError({
+  error,
+  size = 30,
+}: {
+  error: string;
+  size?: number;
+}) {
   return (
     <StatusDisplay
       icon={
         <ErrorOutlineIcon
           sx={{
-            fontSize: "30vh",
+            fontSize: `${size}vh`,
           }}
         />
       }
@@ -34,15 +41,32 @@ export function ImageListError({ error }: { error: string }) {
   );
 }
 
-export function ImageListIdDefined() {
-  return <StatusDisplay
-    icon={
-      <PriorityHighIcon
-        sx={{
-          fontSize: "30vh",
-        }}
-      />
-    }
-    info={<Alert severity="info">No images directory set</Alert>}
-  />;
+export function EmptyFolder({ size = 30 }: { size?: number }) {
+  return (
+    <StatusDisplay
+      icon={
+        <WarningIcon
+          sx={{
+            fontSize: `${size}vh`,
+          }}
+        />
+      }
+      info={<Alert severity="warning">No images found</Alert>}
+    />
+  );
+}
+
+export function ImageListIdDefined({ size = 30 }: { size?: number }) {
+  return (
+    <StatusDisplay
+      icon={
+        <PriorityHighIcon
+          sx={{
+            fontSize: `${size}vh`,
+          }}
+        />
+      }
+      info={<Alert severity="info">No images directory set</Alert>}
+    />
+  );
 }

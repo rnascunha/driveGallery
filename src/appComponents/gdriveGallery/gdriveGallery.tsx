@@ -4,8 +4,6 @@ import {
   Alert,
   AlertColor,
   CircularProgress,
-  Divider,
-  Drawer,
   IconButton,
   Snackbar,
   Stack,
@@ -16,10 +14,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { DisplayConfig, Status } from "./types";
 
-import TopMenu from "./components/sideMenu/topMenu";
 import SideMenu from "./components/sideMenu";
 
-import { getConfigFile, mergeProps } from "./functions";
+import { getConfigFile, listFiles, mergeProps } from "./functions";
 
 import { SkeletonDriveGallery } from "./components/skeleton";
 import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
@@ -29,9 +26,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { defaultDisplayProps, discoveryDocs, scopes } from "./constants";
-import DisplayImageContainer from "./components/displayImageContainer";
-
-const width = 300;
+import DisplayImageShow from "./components/displayImage/displayImageShow";
 
 interface GDriveGalleryProps {
   id?: string;
@@ -55,6 +50,11 @@ export default function GDriveGallery({
   const token = useRef<google.accounts.oauth2.TokenClient | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const configId = useRef<string | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
+  const [images, setImages] = useState<gapi.client.drive.File[] | undefined>(
+    undefined
+  );
+  const [force, setForce] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -97,38 +97,40 @@ export default function GDriveGallery({
       });
   }, [dir, state.api]);
 
+  useEffect(() => {
+    setError(null);
+    if (!dir) return;
+
+    listFiles(dir.id as string)
+      .then((f) => {
+        if (!f) return;
+        setImages(f.result.files as gapi.client.drive.File[]);
+      })
+      .catch((e) => {
+        setImages(undefined);
+        setError(e.result.error.message);
+      });
+  }, [dir, force]);
+
   return (
     <>
-      <Drawer variant="persistent" open={open}>
-        <Stack
-          sx={{
-            width,
-            bgcolor: "rgb(245, 245, 245)",
-            height: "100%",
-          }}
-        >
-          <TopMenu
-            dir={dir}
-            props={props}
-            setOpen={setOpen}
-            setProps={setProps}
-            state={state}
-            setState={setState}
-            token={token.current}
-            onSignOut={() => setState((prev) => ({ ...prev, signed: false }))}
-            setStatus={setStatus}
-            configId={configId}
-          />
-          <Divider />
-          <SideMenu
-            dir={dir}
-            setDir={setDir}
-            props={props}
-            setProps={setProps}
-            state={state}
-          />
-        </Stack>
-      </Drawer>
+      <SideMenu
+        dir={dir}
+        setDir={setDir}
+        open={open}
+        setOpen={setOpen}
+        props={props}
+        setProps={setProps}
+        state={state}
+        setState={setState}
+        setStatus={setStatus}
+        token={token}
+        configId={configId}
+        images={images}
+        setImages={setImages}
+        setForce={setForce}
+        error={error}
+      />
       <Stack
         sx={{
           flex: 1,
@@ -159,7 +161,12 @@ export default function GDriveGallery({
           )}
         </Stack>
         {state.api ? (
-          <DisplayImageContainer dir={dir} props={props} />
+          <DisplayImageShow
+            dir={dir}
+            props={props}
+            error={error}
+            images={images}
+          />
         ) : (
           <SkeletonDriveGallery props={props} />
         )}
