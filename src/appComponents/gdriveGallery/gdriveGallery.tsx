@@ -12,11 +12,11 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 
-import { DisplayConfig, Status } from "./types";
+import { DisplayConfig, Force, Status } from "./types";
 
 import SideMenu from "./components/sideMenu";
 
-import { getConfigFile, listFiles, mergeProps } from "./functions";
+import { getConfigFile, listFiles, mergeProps } from "./functions/functions";
 
 import { SkeletonDriveGallery } from "./components/skeleton";
 import { GoogleAPIState } from "ts-dom-libs/lib/google/types";
@@ -27,6 +27,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { defaultDisplayProps, discoveryDocs, scopes } from "./constants";
 import DisplayImageShow from "./components/displayImage/displayImageShow";
+
+import "./global.css";
 
 interface GDriveGalleryProps {
   id?: string;
@@ -54,7 +56,7 @@ export default function GDriveGallery({
   const [images, setImages] = useState<gapi.client.drive.File[] | undefined>(
     undefined
   );
-  const [force, setForce] = useState(false);
+  const [force, setForce] = useState<Force>({ images: false, config: false });
 
   useEffect(() => {
     if (!id) return;
@@ -95,7 +97,7 @@ export default function GDriveGallery({
         configId.current = undefined;
         console.warn("Error getting config");
       });
-  }, [dir, state.api]);
+  }, [dir, state.api, force.config]);
 
   useEffect(() => {
     setError(null);
@@ -110,7 +112,7 @@ export default function GDriveGallery({
         setImages(undefined);
         setError(e.result.error.message);
       });
-  }, [dir, force]);
+  }, [dir, force.images]);
 
   return (
     <>

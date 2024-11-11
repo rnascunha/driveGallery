@@ -30,6 +30,24 @@ export function createFolder(
   });
 }
 
+export function createLink(
+  linkTo: gapi.client.drive.File,
+  fileDest: gapi.client.drive.File,
+  fields?: string[]
+) {
+  return gapi.client.drive.files.create({
+    fields: fields?.join(","),
+    resource: {
+      mimeType: "application/vnd.google-apps.shortcut",
+      shortcutDetails: {
+        targetId: linkTo.id,
+        targetMimeType: linkTo.mimeType,
+      },
+      ...fileDest,
+    },
+  });
+}
+
 export function createFile(
   metadata: gapi.client.drive.File,
   body: string
@@ -145,6 +163,48 @@ export function setPermissionToAnyoneCanRead(fileId: string) {
     resource: {
       role: "reader",
       type: "anyone",
+    },
+  });
+}
+
+export async function deleteFile(id: string) {
+  return await gapi.client.drive.files.delete({
+    fileId: id,
+  });
+}
+
+export async function deleteAllFilesByNameAtFolder(
+  name: string,
+  parentId: string
+) {
+  try {
+    const res = await gapi.client.drive.files.list({
+      fields: "files(id)",
+      pageSize: 10,
+      q: `name = '${name}' and '${parentId}' in parents`,
+      spaces: "drive",
+    });
+    if (res.status !== 200) return { error: true, result: res };
+    if (res.result.files!.length === 0) return { error: false, result: res };
+    const res2 = await Promise.all(
+      res.result.files!.map((f) => deleteFile(f.id as string))
+    );
+    return { error: res2.every((f) => f.status === 204), result: res2 };
+  } catch (e) {
+    return { error: true, result: e };
+  }
+}
+
+export async function copyFile(
+  fromFileId: string,
+  toFolderId: string,
+  fields?: string[]
+) {
+  return await gapi.client.drive.files.copy({
+    fileId: fromFileId,
+    fields: fields?.join(","),
+    resource: {
+      parents: [toFolderId],
     },
   });
 }

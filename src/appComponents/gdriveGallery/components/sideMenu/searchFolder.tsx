@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { debounce } from "ts-dom-libs/lib/debounce";
-import { searchFolderByNameOrId } from "../../functions";
+import { searchFolderByNameOrId } from "../../functions/search";
 
 interface StateFolderProps {
   dir: gapi.client.drive.File | null;

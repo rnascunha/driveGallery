@@ -27,6 +27,7 @@
     "@types/gapi.auth2": "^0.0.61",
     "@types/gapi.client.drive-v3": "^0.0.5",
     "@types/google.accounts": "^0.0.15",
+    "@types/google.picker": "^0.0.45",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

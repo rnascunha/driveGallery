@@ -3,7 +3,7 @@
 import { DisplayConfig } from "../types";
 import { useEffect, useState } from "react";
 
-import { listFiles } from "../functions";
+import { listFiles } from "../functions/functions";
 import DisplayImageShow from "./displayImage/displayImageShow";
 
 import "react-image-gallery/styles/css/image-gallery.css";

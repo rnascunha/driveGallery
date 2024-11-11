@@ -3,7 +3,7 @@ import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { SkeletonTitle } from "../skeleton";
 import { driveImageThumbnailURL } from "@/lib/google/driveUtils";
-import { makeStyle } from "../../functions";
+import { makeStyle } from "../../functions/functions";
 
 function Logo({ props }: { props: DisplayConfig }) {
   return (

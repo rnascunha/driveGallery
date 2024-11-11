@@ -43,7 +43,11 @@ export function GoogleScriptsSpecifics({
         gapiScriptLoad(
           process.env.NEXT_PUBLIC_apiKey as string,
           discoveryDocs,
-          () => setState((prev) => ({ ...prev, api: true }))
+          () => {
+            gapi.load("client:picker", () =>
+              setState((prev) => ({ ...prev, api: true }))
+            );
+          }
         )
       }
       gapiReady={() => {

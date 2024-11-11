@@ -7,6 +7,11 @@ export interface Status {
   message: string;
 }
 
+export interface Force {
+  images: boolean;
+  config: boolean;
+}
+
 export const displayTypes = ["grid", "gallery", "fullHeight"] as const;
 export type DisplayType = (typeof displayTypes)[number];
 

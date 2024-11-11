@@ -7,7 +7,7 @@ import { gapiScriptLoad } from "ts-dom-libs/lib/google/functions";
 import {
   getConfigFile,
   mergeProps,
-} from "@/appComponents/gdriveGallery/functions";
+} from "@/appComponents/gdriveGallery/functions/functions";
 import { SkeletonDriveGallery } from "@/appComponents/gdriveGallery/components/skeleton";
 import {
   defaultDisplayProps,

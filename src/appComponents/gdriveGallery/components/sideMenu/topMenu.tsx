@@ -11,7 +11,7 @@ import {
   makePropsConfig,
   mergeProps,
   uploadConfig,
-} from "../../functions";
+} from "../../functions/functions";
 import Link from "next/link";
 import { DisplayConfig, Status } from "../../types";
 import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
@@ -27,9 +27,9 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import LinkIcon from "@mui/icons-material/Link";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import PersonIcon from '@mui/icons-material/Person';
 
 async function loadJSONFileConfig() {
   const fileList = await filePicker("application/json");
@@ -117,7 +117,7 @@ export default function TopMenu({
               }
               edge="end"
             >
-              <AddToDriveIcon />
+              <PersonIcon />
             </IconButton>
           </span>
         </Tooltip>

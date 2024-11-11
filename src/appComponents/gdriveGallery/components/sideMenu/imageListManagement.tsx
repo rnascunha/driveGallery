@@ -30,8 +30,8 @@ export default function ImageListManagement({
     >
       <ScrollContainer>
         <List>
-          {images.map((img, i) => (
-            <ImageManagement key={`${img?.name}-${i}`} image={img} setImages={setImages} />
+          {images.map((img) => (
+            <ImageManagement key={img.id} image={img} setImages={setImages} />
           ))}
         </List>
       </ScrollContainer>

@@ -71,7 +71,7 @@ export default function ImageManagement({
       if (res.status === 204) {
         setOp({ id: "delete", state: State.NONE });
         setImages((prev) => prev?.filter((i) => i.id !== image.id) ?? prev);
-      }
+      } else setOp({ id: "delete", state: State.FAIL });
     } catch (e) {
       console.error(e);
       setOp({ id: "delete", state: State.FAIL });

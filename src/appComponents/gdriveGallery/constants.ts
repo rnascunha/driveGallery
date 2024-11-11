@@ -22,6 +22,8 @@ export const fontListOptions = [
   ...fontFamilyArray
 ]
 
+export const configFileName = 'config.json';
+
 const defaultGridProps: GridProps = {
   variant: "standard",
   objectFit: "cover",

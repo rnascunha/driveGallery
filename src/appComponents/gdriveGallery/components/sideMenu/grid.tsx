@@ -71,7 +71,7 @@ export default function GridMenu({ props, setProps }: GridMenuProps) {
   };
 
   return (
-    <>
+    <Stack gap={1}>
       <Stack direction="row" alignItems="center" gap={1.5}>
         <SimpleSelect
           label="Image Fit"
@@ -220,6 +220,6 @@ export default function GridMenu({ props, setProps }: GridMenuProps) {
           </Select>
         </FormControl>
       </Stack>
-    </>
+    </Stack>
   );
 }

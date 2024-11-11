@@ -1,10 +1,11 @@
-import { CircularProgress, TextField } from "@mui/material";
-
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  searchByFolderId,
-} from "../../functions";
-import { isDriveFolder, isDriveId, urlFolderToId } from "@/lib/google/driveUtils";
+  isDriveFolder,
+  isDriveId,
+  urlFolderToId,
+} from "@/lib/google/driveUtils";
+import { CircularProgress, TextField } from "@mui/material";
+import { searchByFolderId } from "../../functions/search";
 
 interface InputIdProps {
   dir: gapi.client.drive.File | null;
@@ -19,7 +20,7 @@ export default function InputId({ dir, setDir }: InputIdProps) {
   useEffect(() => {
     if (!dir) return;
     if (dir.id !== value) setValue(dir.id as string);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dir]);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { Divider, Drawer, Stack } from "@mui/material";
-import { DisplayConfig, Status } from "../types";
+import { DisplayConfig, Force, Status } from "../types";
 import { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 // import SearchFolder from "./sideMenu/searchFolder";
@@ -26,7 +26,7 @@ interface SideMenuProps {
   setStatus: Dispatch<SetStateAction<Status | null>>;
   images: gapi.client.drive.File[] | undefined;
   setImages: Dispatch<SetStateAction<gapi.client.drive.File[] | undefined>>;
-  setForce: Dispatch<SetStateAction<boolean>>;
+  setForce: Dispatch<SetStateAction<Force>>;
   error: string | null;
 }
 
@@ -77,6 +77,7 @@ export default function SideMenu({
           images={images}
           setImages={setImages}
           setForce={setForce}
+          setProps={setProps}
           error={error}
         />
         <InputId dir={dir} setDir={setDir} />

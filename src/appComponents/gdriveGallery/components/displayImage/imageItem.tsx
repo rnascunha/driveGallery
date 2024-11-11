@@ -9,8 +9,9 @@ import {
 import { Box, Stack, Typography } from "@mui/material";
 import TitleHeader from "./titleHeader";
 import { ValueUnit } from "@/components/inputUnit";
-import { makeStyle, removeFileNameExtension } from "../../functions";
+import { makeStyle } from "../../functions/functions";
 import { TextConfig } from "../sideMenu/inputFont";
+import { removeFileNameExtension } from "../../functions/utility";
 
 function toValueUnit<T extends string>(v: string | ValueUnit<T>) {
   return typeof v === "string" ? v : `${v.value}${v.unit}`;

@@ -12,7 +12,8 @@ import { DisplayConfig, ImageDetail } from "../../types";
 import ImageCarousel from "./imageCarousel";
 
 import "./imgAnimation.css";
-import { makeStyle, removeFileNameExtension } from "../../functions";
+import { makeStyle } from "../../functions/functions";
+import { removeFileNameExtension } from "../../functions/utility";
 
 function makeTitle(img: ImageDetail, props: DisplayConfig) {
   return props.imageName ? (

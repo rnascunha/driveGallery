@@ -5,6 +5,7 @@ import {
 } from "@/lib/google/drive";
 import {
   Button,
+  Chip,
   CircularProgress,
   Stack,
   StackProps,
@@ -13,6 +14,9 @@ import {
 } from "@mui/material";
 import { Dispatch, forwardRef, SetStateAction, useMemo, useState } from "react";
 import ImageListManagement from "./imageListManagement";
+
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { openSelectFolderPicker, openUploadImagesPicker } from "../../functions/openPicker";
 
 interface FolderManagementProps extends StackProps {
   dire: gapi.client.drive.File | null;
@@ -37,6 +41,10 @@ const FolderManagement = forwardRef<HTMLDivElement, FolderManagementProps>(
 
     const [name, setName] = useState(dir?.name ?? "");
     const [description, setDescription] = useState(dir?.description ?? "");
+    const [parent, setParent] = useState<gapi.client.drive.File>({
+      id: "root",
+      name: "root",
+    });
     const [updating, setUpdating] = useState(false);
     const [error, setError] = useState("");
 
@@ -60,7 +68,7 @@ const FolderManagement = forwardRef<HTMLDivElement, FolderManagementProps>(
           .catch((e) => setError(e.result.error.message))
           .finally(() => setUpdating(false));
       } else {
-        createFolder({ name, description }, [
+        createFolder({ name, description, parents: [parent.id as string] }, [
           "id",
           "name",
           "description",
@@ -85,12 +93,14 @@ const FolderManagement = forwardRef<HTMLDivElement, FolderManagementProps>(
     };
 
     const imagesList = useMemo(() => {
-      return dir && (
-        <ImageListManagement
-          images={images}
-          setImages={setImages}
-          error={errorImage}
-        />
+      return (
+        dir && (
+          <ImageListManagement
+            images={images}
+            setImages={setImages}
+            error={errorImage}
+          />
+        )
       );
     }, [dir, images, errorImage, setImages]);
 
@@ -141,6 +151,37 @@ const FolderManagement = forwardRef<HTMLDivElement, FolderManagementProps>(
             justifyContent: "space-between",
           }}
         >
+          {dir && (
+            <Button
+              variant="contained"
+              startIcon={<AddPhotoAlternateIcon />}
+              onClick={() =>
+                openUploadImagesPicker(dir.id as string, (newImages) =>
+                  setImages((prev) =>
+                    prev ? [...prev, ...newImages] : newImages
+                  )
+                )
+              }
+            >
+              Add Images
+            </Button>
+          )}
+          {!dir && (
+            <Stack direction="row" alignItems="center" gap={0.5}>
+              <Button
+                variant="contained"
+                onClick={() =>
+                  openSelectFolderPicker(
+                    (f) => setParent(f),
+                    "Select Destination"
+                  )
+                }
+              >
+                Destination
+              </Button>
+              <Chip label={parent.name} />
+            </Stack>
+          )}
           <Typography
             sx={{
               color: "red",
@@ -170,6 +211,7 @@ const FolderManagement = forwardRef<HTMLDivElement, FolderManagementProps>(
             </Button>
           </Stack>
         </Stack>
+        <Stack direction="row"></Stack>
         {imagesList}
       </Stack>
     );
