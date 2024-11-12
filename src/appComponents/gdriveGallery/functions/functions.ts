@@ -109,6 +109,8 @@ export async function uploadConfig(
 }
 
 export async function listFiles(id: string) {
+  const token = gapi.client.getToken();
+  gapi.client.setToken(null);
   return gapi.client.drive.files
     .list({
       pageSize: 100,
@@ -118,9 +120,11 @@ export async function listFiles(id: string) {
       orderBy: "name_natural",
     })
     .then((res) => {
+      gapi.client.setToken(token);
       return res;
     })
     .catch((e) => {
+      gapi.client.setToken(token);
       console.log("e1", e);
     });
 }
